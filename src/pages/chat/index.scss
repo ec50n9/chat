@@ -1,17 +1,22 @@
 .chat {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
 
   &__content {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    row-gap: 0.5rem;
     padding: 0.5rem 0;
+    overflow: hidden;
 
-    &--empty{
+    &__list {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      row-gap: 0.5rem;
+    }
+
+    &--empty {
       flex: 1;
       display: flex;
       justify-content: center;
@@ -21,7 +26,7 @@
     }
   }
 
-  &__load-more{
+  &__load-more {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -141,7 +146,7 @@
   }
 }
 
-.floating-btn{
+.floating-btn {
   position: fixed;
   right: 1rem;
   top: 1rem;
@@ -151,12 +156,12 @@
   border-radius: 50%;
   background-color: #007aff;
   color: #fff;
-  font-size: .8rem;
+  font-size: 0.8rem;
   text-align: center;
   cursor: pointer;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   z-index: 100;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 // 从左到右进入

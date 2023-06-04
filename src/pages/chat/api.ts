@@ -34,6 +34,7 @@ const getRandomItems = (originList: any[], count:number) => {
 };
 
 export default {
+  // 获取信息列表
   list: async (assistant_id: string, previous_sequence_id: string|null = null) => {
     const originList = [
       {

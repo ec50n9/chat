@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect, Component } from "react";
-import { View, Text, ScrollView, Input, Image, Icon } from "@tarojs/components";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { View, Text, ScrollView, Input, Image } from "@tarojs/components";
 import {
   ScrollViewContext,
   showToast,
@@ -98,49 +98,23 @@ function Chat() {
 
   // 滚动到底部
   const scrollRef = useRef<ScrollViewContext>(null);
+  const [scrollTop, setScrollTop] = useState(0);
   const [inited, setInited] = useState(false);
   const scrollToBottom = () => {
     // 如果是加载更多
-    if (loadMore || refreshing) {
-      let scrollDiff = scrollRef.current?.scrollHeight;
-      if (loadMore) {
-        scrollDiff -= prevScrollHeight;
-      }
-
-      scrollRef.current?.scrollTo({
-        top: scrollDiff,
-        behavior: "auto",
-      });
+    if (loadMore) {
+      // let scrollDiff = scrollRef.current?.scrollHeight || 0;
+      // scrollDiff -= prevScrollHeight;
+      setScrollTop(0);
       return;
     }
 
-    const behavior = inited ? "smooth" : "auto";
-    scrollRef.current?.scrollTo({
-      top: scrollRef.current?.scrollHeight - scrollRef.current?.clientHeight,
-      behavior,
-    });
+    setScrollTop(99999);
     if (!inited && messages.length > 0) setInited(true);
   };
-  useEffect(scrollToBottom, [messages]);
-
-  const handleScrollToLower = (e) => {
-    const scrollTop = scrollRef.current?.scrollTop || 0;
-    const scrollHeight = scrollRef.current?.scrollHeight || 0;
-
-    const clientHeight = scrollRef.current?.clientHeight || 0;
-    const loadMoreHeight = loadMoreRef.current?.clientHeight || 0;
-    const maxScrollTop = scrollHeight - clientHeight - loadMoreHeight;
-    if (scrollTop >= maxScrollTop) {
-      scrollRef.current?.scrollTo({
-        top: maxScrollTop,
-        behavior: "smooth",
-      });
-      handleRefresh();
-    }
-  };
-
-  // 底部上拉刷新
-  const loadMoreRef = useRef<Component>(null);
+  useEffect(() => {
+    setTimeout(scrollToBottom, 10);
+  }, [messages]);
 
   // 输入框
   const handleInput = (e) => {
@@ -192,44 +166,47 @@ function Chat() {
           enableBackToTop
           onScrollToUpper={handleLoadMore}
           ref={scrollRef}
+          scrollTop={scrollTop}
         >
-          {messages.map((message) => (
-            <View
-              key={message.id}
-              className={`message message--${message.from}`}
-            >
-              <Image
-                className="message__avatar"
-                src={avatarMapper[message.from]}
-              />
-              <View className="message__content">
-                <View className="message__text">
-                  <Text>
-                    {message.content.split("\n").map((line, index) => (
-                      <Text key={index}>
-                        {index !== 0 && <br />}
-                        {line}
-                      </Text>
-                    ))}
-                  </Text>
-                </View>
-                <View className="message__meta">
-                  {/* <Time className="message__time" timestamp={message.time} /> */}
-                  <View className="message__time">{message.time}</View>
-                  {message.from === "other" ? (
-                    <View
-                      className="message__copy"
-                      onClick={() => handleCopy(message)}
-                    >
-                      复制
-                    </View>
-                  ) : (
-                    ""
-                  )}
+          <View className="chat__content__list">
+            {messages.map((message) => (
+              <View
+                key={message.id}
+                className={`message message--${message.from}`}
+              >
+                <Image
+                  className="message__avatar"
+                  src={avatarMapper[message.from]}
+                />
+                <View className="message__content">
+                  <View className="message__text">
+                    <Text>
+                      {message.content.split("\n").map((line, index) => (
+                        <Text key={index}>
+                          {index !== 0 && <br />}
+                          {line}
+                        </Text>
+                      ))}
+                    </Text>
+                  </View>
+                  <View className="message__meta">
+                    {/* <Time className="message__time" timestamp={message.time} /> */}
+                    <View className="message__time">{message.time}</View>
+                    {message.from === "other" ? (
+                      <View
+                        className="message__copy"
+                        onClick={() => handleCopy(message)}
+                      >
+                        复制
+                      </View>
+                    ) : (
+                      ""
+                    )}
+                  </View>
                 </View>
               </View>
-            </View>
-          ))}
+            ))}
+          </View>
         </ScrollView>
       ) : (
         <View className="chat__content chat__content--empty">无聊天记录</View>

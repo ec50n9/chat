@@ -1,7 +1,7 @@
 export default defineAppConfig({
   pages: [
+    'pages/chat/index',
     'pages/index/index',
-    'pages/chat/index'
   ],
   window: {
     backgroundTextStyle: 'light',
