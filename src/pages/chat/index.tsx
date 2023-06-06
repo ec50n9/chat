@@ -38,13 +38,13 @@ function Chat() {
   const [previousSequenceId, setPreviousSequenceId] = useState("");
 
   // 获取消息列表
-  const getMessages = async () => {
+  const getMessages = async (sequenceId = "") => {
     try {
       showLoading({ title: "加载中" });
       setLoading(true);
       const res = await api.list(
         "c193d52dcc4faf3fb716be4e1db1ec19",
-        previousSequenceId
+        sequenceId
       );
       if (res.code === 200) {
         setMessages((prevMessages) =>
@@ -62,7 +62,7 @@ function Chat() {
 
   // 获取历史消息
   useEffect(() => {
-    getMessages();
+    getMessages(previousSequenceId);
   }, []);
 
   const [prevScrollHeight, setPrevScrollHeight] = useState(0);
@@ -72,7 +72,7 @@ function Chat() {
     setLoadMore(true);
     setPrevScrollHeight(scrollRef.current?.scrollHeight || 0);
 
-    getMessages().then(() => {
+    getMessages(previousSequenceId).then(() => {
       setTimeout(() => {
         setLoadMore(false);
       }, 0);

@@ -162,6 +162,12 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   z-index: 100;
   transition: all 0.3s ease-in-out;
+
+  // 按下后的样式
+  &:active {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    -webkit-tap-highlight-color: transparent;
+  }
 }
 
 // 从左到右进入
