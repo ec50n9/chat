@@ -70,7 +70,7 @@
     "eslint-config-taro": "3.6.7",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-react": "^7.8.2",
-    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-react-hooks": "5.0.0-canary-21a161fa3-20230609",
     "postcss": "^8.4.18",
     "react-refresh": "^0.11.0",
     "stylelint": "^14.4.0",

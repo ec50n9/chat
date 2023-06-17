@@ -4,6 +4,8 @@ export default defineAppConfig({
     'pages/chat/index',
     'pages/index/index',
     'pages/activity-lottery/index',
+    'pages/activity-mine/index',
+    'pages/activity-invite/index',
   ],
   window: {
     backgroundTextStyle: 'light',

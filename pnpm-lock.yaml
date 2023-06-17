@@ -103,8 +103,8 @@ devDependencies:
     specifier: ^7.8.2
     version: 7.8.2(eslint@8.12.0)
   eslint-plugin-react-hooks:
-    specifier: ^4.2.0
-    version: 4.2.0(eslint@8.12.0)
+    specifier: 5.0.0-canary-21a161fa3-20230609
+    version: 5.0.0-canary-21a161fa3-20230609(eslint@8.12.0)
   postcss:
     specifier: ^8.4.18
     version: 8.4.18
@@ -6685,11 +6685,11 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-plugin-react-hooks@4.2.0(eslint@8.12.0):
-    resolution: {integrity: sha512-623WEiZJqxR7VdxFCKLI6d6LLpwJkGPYKODnkH3D7WpOG5KM8yWueBd8TLsNAetEJNF5iJmolaAKO3F8yzyVBQ==}
+  /eslint-plugin-react-hooks@5.0.0-canary-21a161fa3-20230609(eslint@8.12.0):
+    resolution: {integrity: sha512-cqzWu1rS4G9CJBgy4+i1/fpFLhd0hrKjy2cyPQBZLz3Y4P/FESmf96maV7+1rZ5sUlzmWKC0Guzu32RAX3O2Hg==}
     engines: {node: '>=10'}
     peerDependencies:
-      eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
+      eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
     dependencies:
       eslint: 8.12.0
     dev: true
