@@ -1,0 +1,167 @@
+.page-mine {
+  min-height: 100vh;
+  background-image: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0) 5rem,
+      rgba(246, 246, 246, 1) 10rem
+    ),
+    url(../../assets/images/lottery-bg.webp);
+  background-size: cover;
+  padding: 0 1rem 1rem;
+  box-sizing: border-box;
+  overflow-y: auto;
+
+  .profile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 0.5rem;
+    color: #fff;
+    margin: 3rem 0 1rem;
+
+    &__avatar {
+      flex-shrink: 0;
+      width: 2.8rem;
+      height: 2.8rem;
+      border: 0.1rem solid #fff;
+      border-radius: 50%;
+      background-color: aquamarine;
+    }
+
+    &__info {
+      flex-grow: 1;
+    }
+
+    &__name {
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    &__desc {
+      font-size: 0.6rem;
+      opacity: 0.8;
+    }
+
+    &__edit{
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      background-color: rgba($color: #000000, $alpha: .3);
+      border-radius: 2rem;
+    }
+
+    &__login {
+      padding: 0.4rem 0.7rem;
+      font-size: 0.6rem;
+      font-weight: bold;
+      color: #e76038;
+      background-color: #fff;
+      border-radius: 999px;
+    }
+  }
+
+  .card {
+    padding: 0.5rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    color: #333;
+
+    &--sm {
+      .card__title {
+        font-size: 0.7rem;
+      }
+      .card__count {
+        font-size: 1rem;
+        color: #e76038;
+      }
+      .card__details {
+        display: flex;
+        align-items: center;
+        column-gap: .1rem;
+        font-size: 0.6rem;
+        color: #999;
+      }
+    }
+
+    &--md {
+      padding: .6rem .8rem;
+      font-size: .7rem;
+
+      .card__title {
+        font-size: 1rem;
+        margin-bottom: .2rem;
+      }
+    }
+  }
+
+  .grid-layout {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-gap: 0.5rem;
+  }
+
+  .grid-item {
+    grid-column: span 4;
+
+    &--md {
+      grid-column: span 12;
+    }
+  }
+
+  .card-list{
+    display: flex;
+    flex-direction: column;
+
+    &--hor{
+      flex-direction: row;
+      column-gap: .5rem;
+
+      .card-item{
+        flex-grow: 1;
+        flex-basis: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        &__icon{
+          font-size: 1.5rem;
+        }
+      }
+    }
+
+    &--ver{
+      flex-direction: column;
+
+      .card-item{
+        display: flex;
+        align-items: center;
+        column-gap: .5rem;
+        padding: .4rem 0;
+        border-bottom: 1px solid rgba($color: #000000, $alpha: .1);
+
+        &:last-child{
+          border-bottom: none;
+          padding-bottom: 0;
+        }
+
+        &__icon, &__nav{
+          flex-shrink: 0;
+          font-size: 1rem;
+        }
+
+        &__icon{
+          font-size: 1rem;
+        }
+
+        &__title{
+          flex-grow: 1;
+          font-size: .8rem;
+        }
+      }
+    }
+  }
+}
