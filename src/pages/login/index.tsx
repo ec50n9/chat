@@ -17,21 +17,14 @@ const Logo = () => <View className='logo'></View>;
 
 const Tips = () => (
   <View className='tips'>
-    <View className='tips__title'>授权以使用完整功能</View>
-    <View className='tips__sub-title'>AI 小能需要获取以下权限</View>
-
-    <View className='tips__item'>
-      <View className='tips__item-icon'>
-        <SmileOutlined />
-      </View>
-      <View className='tips__item-title'>获取您的用户信息</View>
+    <View className='tips__progress'>
+      <View className='tips__progress-start'>1</View>
+      <View className='tips__progress-line'></View>
+      <View className='tips__progress-end'>2</View>
     </View>
-
-    <View className='tips__item'>
-      <View className='tips__item-icon'>
-        <BrowsingHistoryOutlined />
-      </View>
-      <View className='tips__item-title'>获取您的用户信息</View>
+    <View className='tips__title'>登录后即可享受更多服务</View>
+    <View className='tips__desc'>
+      我们将对您当前使用的微信号绑定至泡泡玛特手机号账户中，后续登录更快捷
     </View>
   </View>
 );
@@ -103,7 +96,7 @@ export default function Index() {
   return (
     <View className='mine-page'>
       <Header />
-      <Logo />
+      <Tips />
       <Actions />
       <Footer
         protocolList={protocolList}
