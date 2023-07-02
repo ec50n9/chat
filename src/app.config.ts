@@ -1,5 +1,8 @@
 export default defineAppConfig({
   pages: [
+    'pages/community/index',
+    'pages/community-detail/index',
+    'pages/community-publish/index',
     'pages/login/index',
     'pages/mine/index',
     'pages/lucky/index',
