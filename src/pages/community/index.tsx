@@ -168,29 +168,45 @@ function PostList(props: { posts: Post[] }) {
 }
 
 // 悬浮按钮
-function FloatingButton(props: { onClick?: () => void }) {
+function FloatingButton() {
   const [show, setShow] = useState(false);
 
   const handleClick = () => {
-    if (props.onClick) props.onClick();
     setShow(!show);
+  };
+
+  // 跳转到发布页
+  const gotoPublish = (mode: "text" | "img-text" | "img") => {
+    setShow(false);
+    Taro.navigateTo({
+      url: `/pages/community-publish/index?mode=${mode}`,
+    });
   };
 
   return (
     <View className={`floating ${!show && "floating--hidden"}`}>
       <View className='floating__bg' onClick={() => setShow(false)} />
 
-      <View className='floating__btn floating__btn--text'>
+      <View
+        className='floating__btn floating__btn--text'
+        onClick={() => gotoPublish("text")}
+      >
         <Edit />
         <View className='floating__btn__desc'>发布文字</View>
       </View>
 
-      <View className='floating__btn floating__btn--img-text'>
+      <View
+        className='floating__btn floating__btn--img-text'
+        onClick={() => gotoPublish("img-text")}
+      >
         <Edit />
         <View className='floating__btn__desc'>发布图文</View>
       </View>
 
-      <View className='floating__btn floating__btn--imgs'>
+      <View
+        className='floating__btn floating__btn--imgs'
+        onClick={() => gotoPublish("img")}
+      >
         <Edit />
         <View className='floating__btn__desc'>发布图片</View>
       </View>
@@ -240,7 +256,6 @@ export default function Index() {
         value={currentTab}
         onChange={setCurrentTab}
         sticky
-        swipeable
       >
         {tabs.map((tab) => (
           <TTabs.TabPane
