@@ -157,10 +157,10 @@ function Chat() {
   };
 
   return (
-    <View className="chat">
+    <View className='chat'>
       {messages && messages.length > 0 ? (
         <ScrollView
-          className="chat__content"
+          className='chat__content'
           scrollY
           scrollWithAnimation
           enableBackToTop
@@ -168,18 +168,18 @@ function Chat() {
           ref={scrollRef}
           scrollTop={scrollTop}
         >
-          <View className="chat__content__list">
+          <View className='chat__content__list'>
             {messages.map((message) => (
               <View
                 key={message.id}
                 className={`message message--${message.from}`}
               >
                 <Image
-                  className="message__avatar"
+                  className='message__avatar'
                   src={avatarMapper[message.from]}
                 />
-                <View className="message__content">
-                  <View className="message__text">
+                <View className='message__content'>
+                  <View className='message__text'>
                     <Text>
                       {message.content.split("\n").map((line, index) => (
                         <Text key={index}>
@@ -189,12 +189,12 @@ function Chat() {
                       ))}
                     </Text>
                   </View>
-                  <View className="message__meta">
+                  <View className='message__meta'>
                     {/* <Time className="message__time" timestamp={message.time} /> */}
-                    <View className="message__time">{message.time}</View>
+                    <View className='message__time'>{message.time}</View>
                     {message.from === "other" ? (
                       <View
-                        className="message__copy"
+                        className='message__copy'
                         onClick={() => handleCopy(message)}
                       >
                         复制
@@ -209,24 +209,24 @@ function Chat() {
           </View>
         </ScrollView>
       ) : (
-        <View className="chat__content chat__content--empty">无聊天记录</View>
+        <View className='chat__content chat__content--empty'>无聊天记录</View>
       )}
-      <View className="chat__input">
+      <View className='chat__input'>
         <Input
           value={inputValue}
           onInput={handleInput}
           onConfirm={handleSend}
           onClick={handleInputFocus}
-          placeholder="请输入消息"
-          confirmType="send"
+          placeholder='请输入消息'
+          confirmType='send'
         />
-        <View className="chat__send" onClick={handleSend}>
+        <View className='chat__send' onClick={handleSend}>
           发送
         </View>
       </View>
 
       {/* 悬浮按钮 */}
-      <View className="floating-btn" onClick={handleRefresh}>
+      <View className='floating-btn' onClick={handleRefresh}>
         re
       </View>
     </View>
