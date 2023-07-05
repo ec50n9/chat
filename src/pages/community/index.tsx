@@ -29,7 +29,7 @@ function CircleList(props: {
   onChange: (id: string) => void;
 }) {
   return (
-    <View className='circle-list'>
+    <ScrollView className='circle-list' scrollX>
       {props.circles.map((circle) => (
         <View
           className={`circle-list__item ${
@@ -41,7 +41,11 @@ function CircleList(props: {
           {circle.name}
         </View>
       ))}
-    </View>
+      <View className='circle-list__item'>
+        <Plus color='#e76038' style={{ marginRight: ".2rem" }} />
+        添加
+      </View>
+    </ScrollView>
   );
 }
 
