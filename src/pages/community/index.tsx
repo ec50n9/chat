@@ -1,4 +1,4 @@
-import { View, Image } from "@tarojs/components";
+import { View, Image, ScrollView } from "@tarojs/components";
 import { useEffect, useState } from "react";
 import { List, Search as TSearch, Tabs as TTabs } from "@taroify/core";
 import { Share, Comment, Like, Plus, Edit } from "@taroify/icons";
@@ -6,7 +6,7 @@ import Taro from "@tarojs/taro";
 
 import "./index.scss";
 import AuthorInfo from "./components/author-info";
-import { getPosts } from "./api";
+import { Circle, Post, getCircles, getPosts } from "./api";
 
 // 顶部搜索框
 function SearchBar() {
@@ -22,20 +22,28 @@ function SearchBar() {
   );
 }
 
-type Post = {
-  id: string;
-  title: string;
-  content: string;
-  images?: string[];
-  commentCount: number;
-  likeCount: number;
-  createdAt: number;
-  author: {
-    name: string;
-    avatar: string;
-    circles: string[];
-  };
-};
+// 顶部圈子列表
+function CircleList(props: {
+  circles: Circle[];
+  currentId: string;
+  onChange: (id: string) => void;
+}) {
+  return (
+    <View className='circle-list'>
+      {props.circles.map((circle) => (
+        <View
+          className={`circle-list__item ${
+            circle.id === props.currentId ? "circle-list__item--active" : ""
+          }`}
+          key={circle.id}
+          onClick={() => props.onChange(circle.id)}
+        >
+          {circle.name}
+        </View>
+      ))}
+    </View>
+  );
+}
 
 // 获取文章行数
 function getLineCount(text: string, count: number) {
@@ -220,6 +228,16 @@ function FloatingButton() {
 
 // 社区首页
 export default function Index() {
+  // 获取圈子列表
+  const [circles, setCircles] = useState<Circle[]>([]);
+  const [currentCircleId, setCurrentCircleId] = useState("");
+  useEffect(() => {
+    getCircles().then((data) => {
+      setCircles(data);
+      setCurrentCircleId(data[0].id);
+    });
+  }, []);
+
   // 获取文章列表
   const [posts, setPosts] = useState<Post[]>([]);
   useEffect(() => {
@@ -232,10 +250,15 @@ export default function Index() {
     {
       title: "圈子",
       content: (
-        <List>
+        <ScrollView style={{ height: "100%" }} scrollY>
           <SearchBar />
+          <CircleList
+            circles={circles}
+            currentId={currentCircleId}
+            onChange={setCurrentCircleId}
+          />
           <PostList posts={posts} />
-        </List>
+        </ScrollView>
       ),
     },
     {

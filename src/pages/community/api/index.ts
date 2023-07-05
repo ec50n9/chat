@@ -22,6 +22,34 @@ export type PostComment = {
   createdAt: number;
 };
 
+export type Circle = {
+  id: string;
+  name: string;
+};
+
+const circles: Circle[] = [
+  {
+    id: "1",
+    name: "圈子1",
+  },
+  {
+    id: "2",
+    name: "IT 互联网",
+  },
+  {
+    id: "3",
+    name: "圈子3",
+  },
+  {
+    id: "4",
+    name: "圈子4",
+  },
+  {
+    id: "5",
+    name: "圈子5",
+  },
+];
+
 const posts: Post[] = [
   {
     id: "1",
@@ -117,3 +145,5 @@ export const getPostsByTitle = async (title: string) =>
 
 export const getPostCommentsByPostId = async (postId: string) =>
   PostComments[postId] || [];
+
+export const getCircles = async () => circles;
