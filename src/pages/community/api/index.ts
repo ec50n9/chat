@@ -27,6 +27,14 @@ export type Circle = {
   name: string;
 };
 
+export type Article = {
+  id: string;
+  title: string;
+  cover: string;
+  likeCount: number;
+  author: Author;
+}
+
 const circles: Circle[] = [
   {
     id: "1",
