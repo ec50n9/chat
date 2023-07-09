@@ -29,7 +29,8 @@ function CircleList(props: {
 }) {
   return (
     <View className='circle-list-wrapper'>
-      <ScrollView className='circle-list' scrollX>
+      <ScrollView scrollX>
+        <View className='circle-list'>
         {props.circles.map((circle) => (
           <View
             className={`circle-list__item ${
@@ -41,6 +42,7 @@ function CircleList(props: {
             {circle.name}
           </View>
         ))}
+        </View>
       </ScrollView>
       <View className='circle-list__item circle-list__item--pin'>
         <ArrowDown />
