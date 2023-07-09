@@ -1,25 +1,12 @@
 import { ScrollView, View, Image } from "@tarojs/components";
 import { useState, useEffect } from "react";
-import { Search as TSearch } from "@taroify/core";
 import { Share, Comment, Like, ArrowDown } from "@taroify/icons";
 import Taro from "@tarojs/taro";
 import AuthorInfo from "../components/author-info";
 
 import { Circle, Post, getCircles, getPosts } from "../api";
-
-// 顶部搜索框
-function SearchBar() {
-  const [value, setValue] = useState("");
-  return (
-    <TSearch
-      className='search-bar'
-      value={value}
-      onChange={(e) => setValue(e.detail.value)}
-      placeholder='请输入搜索关键词'
-      shape='rounded'
-    />
-  );
-}
+import SearchBar from "../components/search-bar";
+import "./index.scss";
 
 // 顶部圈子列表
 function CircleList(props: {
@@ -31,17 +18,17 @@ function CircleList(props: {
     <View className='circle-list-wrapper'>
       <ScrollView scrollX>
         <View className='circle-list'>
-        {props.circles.map((circle) => (
-          <View
-            className={`circle-list__item ${
-              circle.id === props.currentId ? "circle-list__item--active" : ""
-            }`}
-            key={circle.id}
-            onClick={() => props.onChange(circle.id)}
-          >
-            {circle.name}
-          </View>
-        ))}
+          {props.circles.map((circle) => (
+            <View
+              className={`circle-list__item ${
+                circle.id === props.currentId ? "circle-list__item--active" : ""
+              }`}
+              key={circle.id}
+              onClick={() => props.onChange(circle.id)}
+            >
+              {circle.name}
+            </View>
+          ))}
         </View>
       </ScrollView>
       <View className='circle-list__item circle-list__item--pin'>
@@ -202,15 +189,17 @@ function Index() {
   }, []);
 
   return (
-    <ScrollView style={{ height: "100%" }} scrollY>
-      <SearchBar />
-      <CircleList
-        circles={circles}
-        currentId={currentCircleId}
-        onChange={setCurrentCircleId}
-      />
-      <PostList posts={posts} />
-    </ScrollView>
+    <View className='circles-tab'>
+      <ScrollView className='scroll-view' scrollY>
+        <SearchBar />
+        <CircleList
+          circles={circles}
+          currentId={currentCircleId}
+          onChange={setCurrentCircleId}
+        />
+        <PostList posts={posts} />
+      </ScrollView>
+    </View>
   );
 }
 
