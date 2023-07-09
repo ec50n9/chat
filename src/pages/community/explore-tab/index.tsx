@@ -2,6 +2,7 @@ import { View, ScrollView, Image } from "@tarojs/components";
 import { useEffect, useState } from "react";
 import { LikeOutlined } from "@taroify/icons";
 import "@taroify/icons/index.scss";
+import SearchBar from "../components/search-bar";
 import { Article } from "../api";
 import "./index.scss";
 
@@ -19,7 +20,7 @@ function ArticleItem(props: { article: Article }) {
           {article.author.name}
         </View>
         <View className='article-item__info__like'>
-          <LikeOutlined style={{marginRight: '4px'}} />
+          <LikeOutlined style={{ marginRight: "4px" }} />
           {article.likeCount}
         </View>
       </View>
@@ -29,13 +30,11 @@ function ArticleItem(props: { article: Article }) {
 
 function ArticleList(props: { articles: Article[] }) {
   return (
-    <ScrollView className='scroll-view' scrollY>
-      <View className='article-list'>
-        {props.articles.map((article) => (
-          <ArticleItem article={article} key={article.id} />
-        ))}
-      </View>
-    </ScrollView>
+    <View className='article-list'>
+      {props.articles.map((article) => (
+        <ArticleItem article={article} key={article.id} />
+      ))}
+    </View>
   );
 }
 
@@ -56,8 +55,7 @@ function Index() {
       },
       {
         id: "2",
-        title:
-          "文章文章文章文章文章文章文章,文章文章文章文章",
+        title: "文章文章文章文章文章文章文章,文章文章文章文章",
         cover: "",
         likeCount: 100,
         author: {
@@ -68,8 +66,7 @@ function Index() {
       },
       {
         id: "3",
-        title:
-          "文章文章文章文章文章文章文章,文章文章文章文章",
+        title: "文章文章文章文章文章文章文章,文章文章文章文章",
         cover: "",
         likeCount: 100,
         author: {
@@ -80,8 +77,7 @@ function Index() {
       },
       {
         id: "4",
-        title:
-          "文章文章文章文章文章文章文章,文章文章文章文章",
+        title: "文章文章文章文章文章文章文章,文章文章文章文章",
         cover: "",
         likeCount: 100,
         author: {
@@ -92,8 +88,7 @@ function Index() {
       },
       {
         id: "6",
-        title:
-          "文章文章文章文章文章文章文章,文章文章文章文章",
+        title: "文章文章文章文章文章文章文章,文章文章文章文章",
         cover: "",
         likeCount: 100,
         author: {
@@ -104,8 +99,7 @@ function Index() {
       },
       {
         id: "6",
-        title:
-          "文章文章文章文章文章文章文章,文章文章文章文章",
+        title: "文章文章文章文章文章文章文章,文章文章文章文章",
         cover: "",
         likeCount: 100,
         author: {
@@ -119,7 +113,10 @@ function Index() {
 
   return (
     <View className='explore-tab'>
-      <ArticleList articles={articles} />
+      <ScrollView className='scroll-view' scrollY>
+        <SearchBar />
+        <ArticleList articles={articles} />
+      </ScrollView>
     </View>
   );
 }
