@@ -1,7 +1,7 @@
 import { View, Image, ScrollView } from "@tarojs/components";
 import { useEffect, useState } from "react";
 import { List, Search as TSearch, Tabs as TTabs } from "@taroify/core";
-import { Share, Comment, Like, Plus, Edit } from "@taroify/icons";
+import { Share, Comment, Like, Plus, Edit, ArrowDown } from "@taroify/icons";
 import Taro from "@tarojs/taro";
 
 import "./index.scss";
@@ -29,23 +29,25 @@ function CircleList(props: {
   onChange: (id: string) => void;
 }) {
   return (
-    <ScrollView className='circle-list' scrollX>
-      {props.circles.map((circle) => (
-        <View
-          className={`circle-list__item ${
-            circle.id === props.currentId ? "circle-list__item--active" : ""
-          }`}
-          key={circle.id}
-          onClick={() => props.onChange(circle.id)}
-        >
-          {circle.name}
-        </View>
-      ))}
-      <View className='circle-list__item'>
-        <Plus color='#e76038' style={{ marginRight: ".2rem" }} />
-        添加
+    <View className='circle-list-wrapper'>
+      <ScrollView className='circle-list' scrollX>
+        {props.circles.map((circle) => (
+          <View
+            className={`circle-list__item ${
+              circle.id === props.currentId ? "circle-list__item--active" : ""
+            }`}
+            key={circle.id}
+            onClick={() => props.onChange(circle.id)}
+          >
+            {circle.name}
+          </View>
+        ))}
+      </ScrollView>
+      <View className='circle-list__item circle-list__item--pin'>
+        <ArrowDown />
+        {/* <Plus color='#e76038' style={{ marginRight: ".2rem" }} /> */}
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
