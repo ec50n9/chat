@@ -11,7 +11,7 @@
 
   --color-primary: #e76038;
 
-  --size: 2.5rem;
+  --floating-btn-size: 2.5rem;
 
   height: 100%;
   font-size: var(--font-md);
@@ -83,9 +83,9 @@
       bottom: calc(var(--gap-lg) * 2);
       z-index: 1;
 
-      width: var(--size);
-      height: var(--size);
-      line-height: var(--size);
+      width: var(--floating-btn-size);
+      height: var(--floating-btn-size);
+      line-height: var(--floating-btn-size);
       text-align: center;
       color: #fff;
       background-color: var(--color-primary);
