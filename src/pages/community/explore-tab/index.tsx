@@ -29,7 +29,7 @@ function ArticleItem(props: { article: Article }) {
 
 function ArticleList(props: { articles: Article[] }) {
   return (
-    <ScrollView scrollY>
+    <ScrollView className='scroll-view' scrollY>
       <View className='article-list'>
         {props.articles.map((article) => (
           <ArticleItem article={article} key={article.id} />
@@ -56,6 +56,54 @@ function Index() {
       },
       {
         id: "2",
+        title:
+          "文章文章文章文章文章文章文章,文章文章文章文章",
+        cover: "",
+        likeCount: 100,
+        author: {
+          name: "作者1",
+          avatar: "",
+          circles: [],
+        },
+      },
+      {
+        id: "3",
+        title:
+          "文章文章文章文章文章文章文章,文章文章文章文章",
+        cover: "",
+        likeCount: 100,
+        author: {
+          name: "作者1",
+          avatar: "",
+          circles: [],
+        },
+      },
+      {
+        id: "4",
+        title:
+          "文章文章文章文章文章文章文章,文章文章文章文章",
+        cover: "",
+        likeCount: 100,
+        author: {
+          name: "作者1",
+          avatar: "",
+          circles: [],
+        },
+      },
+      {
+        id: "6",
+        title:
+          "文章文章文章文章文章文章文章,文章文章文章文章",
+        cover: "",
+        likeCount: 100,
+        author: {
+          name: "作者1",
+          avatar: "",
+          circles: [],
+        },
+      },
+      {
+        id: "6",
         title:
           "文章文章文章文章文章文章文章,文章文章文章文章",
         cover: "",

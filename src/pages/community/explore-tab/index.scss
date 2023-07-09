@@ -10,9 +10,14 @@
 
   --color-primary: #ff6700;
 
-  --article-item-height: 400px;
+  --article-item-height: 500px;
 
+  height: 100%;
   font-size: var(--font-lg);
+
+  .scroll-view{
+    height: 100%;
+  }
 
   .article-list{
     display: grid;
