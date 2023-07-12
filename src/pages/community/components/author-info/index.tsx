@@ -2,6 +2,7 @@ import { View, Image } from "@tarojs/components";
 import { Plus } from "@taroify/icons";
 import "@taroify/icons/index.scss";
 import "./index.scss";
+import { Flex } from "@taroify/core";
 
 type Author = {
   name: string;
@@ -41,10 +42,16 @@ function Index(
       </View>
 
       {props.showFollowed && (
-        <View className='post-item__header__follow'>
-          <Plus />
-          关注
-        </View>
+        <Flex direction='column' align='center'>
+          <View className='post-item__header__follow'>
+            <Plus />
+            关注
+          </View>
+          <View className='post-item__header__follow post-item__header__follow--silent'>
+            <Plus />
+            默默支持
+          </View>
+        </Flex>
       )}
     </View>
   );
