@@ -17,7 +17,7 @@
   font-size: var(--font-md);
 
   .tabs {
-    height: 100%;
+    // height: calc(100% - 1px);
     --tabs-line-background-color: var(--color-primary);
 
     &__pane {

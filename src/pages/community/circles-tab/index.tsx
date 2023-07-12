@@ -1,12 +1,13 @@
 import { ScrollView, View, Image } from "@tarojs/components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Share, Comment, Like, ArrowDown } from "@taroify/icons";
-import Taro from "@tarojs/taro";
+import Taro, { usePageScroll } from "@tarojs/taro";
 import AuthorInfo from "../components/author-info";
 
 import { Circle, Post, getCircles, getPosts } from "../api";
 import SearchBar from "../components/search-bar";
 import "./index.scss";
+import { List, Loading, PullRefresh } from "@taroify/core";
 
 // 顶部圈子列表
 function CircleList(props: {
@@ -181,7 +182,35 @@ function Index() {
   }, []);
 
   // 获取文章列表
+  const refreshingRef = useRef(false);
+  const [reachTop, setReachTop] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [scrollTop, setScrollTop] = useState(0);
+  const [pageNo, setPageNo] = useState(1);
+
+  usePageScroll(({ scrollTop: aScrollTop }) => {
+    setScrollTop(aScrollTop);
+    setReachTop(aScrollTop === 0);
+  });
+
+  const onLoad = (page: number) =>
+    new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    });
+
+  const onRefresh = (page: number) => {
+    refreshingRef.current = true;
+    setLoading(true);
+    onLoad(page).then(() => {
+      refreshingRef.current = false;
+      setLoading(false);
+    });
+  };
+
   useEffect(() => {
     getPosts().then((data) => {
       setPosts(data);
@@ -190,15 +219,34 @@ function Index() {
 
   return (
     <View className='circles-tab'>
-      <ScrollView className='scroll-view' scrollY>
-        <SearchBar />
-        <CircleList
-          circles={circles}
-          currentId={currentCircleId}
-          onChange={setCurrentCircleId}
-        />
-        <PostList posts={posts} />
-      </ScrollView>
+      <PullRefresh
+        className='scroll-view'
+        loading={refreshingRef.current}
+        reachTop={reachTop}
+        onRefresh={() => onRefresh(1)}
+      >
+        <List
+          loading={loading}
+          hasMore={hasMore}
+          scrollTop={scrollTop}
+          offset={10}
+          onLoad={() => onLoad(pageNo)}
+        >
+          <SearchBar />
+          <CircleList
+            circles={circles}
+            currentId={currentCircleId}
+            onChange={setCurrentCircleId}
+          />
+          <PostList posts={posts} />
+          {!refreshingRef.current && (
+            <List.Placeholder>
+              {loading && <Loading>加载中...</Loading>}
+              {/* {!hasMore && <ListBottomDivider/>} */}
+            </List.Placeholder>
+          )}
+        </List>
+      </PullRefresh>
     </View>
   );
 }
