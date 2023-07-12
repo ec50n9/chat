@@ -1,6 +1,8 @@
 import { View, ScrollView, Image } from "@tarojs/components";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LikeOutlined } from "@taroify/icons";
+import { usePageScroll } from "@tarojs/taro";
+import { PullRefresh, List, Loading } from "@taroify/core";
 import "@taroify/icons/index.scss";
 import SearchBar from "../components/search-bar";
 import { Article } from "../api";
@@ -87,7 +89,7 @@ function Index() {
         },
       },
       {
-        id: "6",
+        id: "5",
         title: "文章文章文章文章文章文章文章,文章文章文章文章",
         cover: "",
         likeCount: 100,
@@ -111,12 +113,60 @@ function Index() {
     ]);
   }, []);
 
+  const pageSize = 20;
+  const refreshingRef = useRef(false);
+  const [reachTop, setReachTop] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [scrollTop, setScrollTop] = useState(0);
+  const [pageNo, setPageNo] = useState(1);
+
+  usePageScroll(({ scrollTop: aScrollTop }) => {
+    setScrollTop(aScrollTop);
+    setReachTop(aScrollTop === 0);
+  });
+
+  const onLoad = (page: number) =>
+    new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    });
+
+  const onRefresh = (page: number) => {
+    refreshingRef.current = true;
+    setLoading(true);
+    onLoad(page).then(() => {
+      refreshingRef.current = false;
+      setLoading(false);
+    });
+  };
+
   return (
     <View className='explore-tab'>
-      <ScrollView className='scroll-view' scrollY>
-        <SearchBar />
-        <ArticleList articles={articles} />
-      </ScrollView>
+      <PullRefresh
+        className='scroll-view'
+        loading={refreshingRef.current}
+        reachTop={reachTop}
+        onRefresh={() => onRefresh(1)}
+      >
+        <List
+          loading={loading}
+          hasMore={hasMore}
+          scrollTop={scrollTop}
+          offset={10}
+          onLoad={() => onLoad(pageNo)}
+        >
+          <SearchBar />
+          <ArticleList articles={articles} />
+          {!refreshingRef.current && (
+            <List.Placeholder>
+              {loading && <Loading>加载中...</Loading>}
+              {/* {!hasMore && <ListBottomDivider/>} */}
+            </List.Placeholder>
+          )}
+        </List>
+      </PullRefresh>
     </View>
   );
 }
