@@ -1,5 +1,7 @@
 import { ScrollView, View } from "@tarojs/components";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { PullRefresh, List, Loading } from "@taroify/core";
+import { usePageScroll } from "@tarojs/taro";
 import { Circle } from "../api";
 import SearchBar from "../components/search-bar";
 import "./index.scss";
@@ -47,12 +49,60 @@ function Index() {
     ]);
   }, []);
 
+  const pageSize = 20;
+  const refreshingRef = useRef(false);
+  const [reachTop, setReachTop] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [scrollTop, setScrollTop] = useState(0);
+  const [pageNo, setPageNo] = useState(1);
+
+  usePageScroll(({ scrollTop: aScrollTop }) => {
+    setScrollTop(aScrollTop);
+    setReachTop(aScrollTop === 0);
+  });
+
+  const onLoad = (page: number) =>
+    new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    });
+
+  const onRefresh = (page: number) => {
+    refreshingRef.current = true;
+    setLoading(true);
+    onLoad(page).then(() => {
+      refreshingRef.current = false;
+      setLoading(false);
+    });
+  };
+
   return (
     <View className='square-tab'>
-      <ScrollView className='scroll-view' scrollY>
-        <SearchBar />
-        <CircleList circles={circles} />
-      </ScrollView>
+      <PullRefresh
+        className='scroll-view'
+        loading={refreshingRef.current}
+        reachTop={reachTop}
+        onRefresh={() => onRefresh(1)}
+      >
+        <List
+          loading={loading}
+          hasMore={hasMore}
+          scrollTop={scrollTop}
+          offset={10}
+          onLoad={() => onLoad(pageNo)}
+        >
+          <SearchBar />
+          <CircleList circles={circles} />
+          {!refreshingRef.current && (
+            <List.Placeholder>
+              {loading && <Loading>加载中...</Loading>}
+              {/* {!hasMore && <ListBottomDivider/>} */}
+            </List.Placeholder>
+          )}
+        </List>
+      </PullRefresh>
     </View>
   );
 }
