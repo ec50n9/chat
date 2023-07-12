@@ -16,6 +16,8 @@ import {
   getPostsById,
 } from "../community/api";
 import "./index.scss";
+import { Field, FixedView, Flex, Input } from "@taroify/core";
+import Button from "@taroify/core/button/button";
 
 function PostContent(props: { content: string }) {
   const { content } = props;
@@ -25,55 +27,6 @@ function PostContent(props: { content: string }) {
     </View>
   );
 }
-
-// function Actions(props: { post: Post }) {
-//   const { post } = props;
-
-//   const [liked, setLiked] = useState(false);
-
-//   return (
-//     <View className='post-actions'>
-//       <View
-//         className='post-actions__item'
-//         style={{
-//           color: "#047857",
-//           backgroundColor: "#ecfdf5",
-//           borderColor: "#047857",
-//         }}
-//       >
-//         <ShareOutlined className='post-actions__item__icon' />
-//         <View className='post-actions__item__text'>{post.commentCount}</View>
-//       </View>
-//       <View
-//         className='post-actions__item'
-//         style={{
-//           color: "#b45309",
-//           backgroundColor: "#fffbeb",
-//           borderColor: "#b45309",
-//         }}
-//       >
-//         <CommentOutlined className='post-actions__item__icon' />
-//         <View className='post-actions__item__text'>{post.commentCount}</View>
-//       </View>
-//       <View
-//         className='post-actions__item'
-//         style={{
-//           color: "#be123c",
-//           backgroundColor: "#fff1f2",
-//           borderColor: "#be123c",
-//         }}
-//         onClick={() => setLiked(!liked)}
-//       >
-//         {liked ? (
-//           <GoodJob className='post-actions__item__icon' />
-//         ) : (
-//           <GoodJobOutlined className='post-actions__item__icon' />
-//         )}
-//         <View className='post-actions__item__text'>{post.likeCount}</View>
-//       </View>
-//     </View>
-//   );
-// }
 
 function Actions(props: { post: Post }) {
   const { post } = props;
@@ -91,11 +44,7 @@ function Actions(props: { post: Post }) {
       onClick: () => {},
     },
     {
-      icon: liked ? (
-        <GoodJob color='#e76038' />
-      ) : (
-        <GoodJobOutlined />
-      ),
+      icon: liked ? <GoodJob color='#e76038' /> : <GoodJobOutlined />,
       text: post.likeCount,
       onClick: () => setLiked(!liked),
     },
@@ -170,6 +119,52 @@ function PageContent(props: { post: Post; comments: PostComment[] }) {
   );
 }
 
+function CommentInputBar() {
+  const [value, setValue] = useState("");
+
+  function handleSend() {
+    console.log(value);
+  }
+
+  return (
+    <FixedView
+      position='bottom'
+      style={{
+        borderTop: "1px solid #eee",
+        backgroundColor: "#fff",
+        zIndex: 100,
+      }}
+    >
+      <Flex
+        align='center'
+        gutter={20}
+        style={{
+          padding: "8px 8px",
+        }}
+      >
+        <Flex.Item span={18}>
+          <Input
+            placeholder='请输入评论'
+            value={value}
+            onChange={(e) => setValue(e.detail.value)}
+          />
+        </Flex.Item>
+        <Flex.Item span={6}>
+          <Button
+            color='primary'
+            shape='round'
+            size='small'
+            block
+            onClick={handleSend}
+          >
+            发送
+          </Button>
+        </Flex.Item>
+      </Flex>
+    </FixedView>
+  );
+}
+
 function Index() {
   const { id } = Taro.getCurrentInstance().router?.params as { id: string };
   const [post, setPost] = useState<Post | null>(null);
@@ -190,6 +185,7 @@ function Index() {
 
   return (
     <View className='community-detail-page'>
+      <CommentInputBar />
       {post && <PageContent post={post} comments={comments} />}
     </View>
   );
