@@ -6,6 +6,8 @@ import {
   GoodJobOutlined,
   GoodJob,
   ShareOutlined,
+  Share,
+  ArrowDown,
 } from "@taroify/icons";
 import "@taroify/icons/index.scss";
 import AuthInfo from "../community/components/author-info";
@@ -90,6 +92,7 @@ function CommentList(props: { comments: PostComment[] }) {
           {comments.length} 条
         </View>
       </View>
+      <CommentInputBar onSend={() => {}} />
       <View className='comment-list'>
         {comments.map((comment) => (
           <Comment comment={comment} key={comment.id} />
@@ -119,49 +122,52 @@ function PageContent(props: { post: Post; comments: PostComment[] }) {
   );
 }
 
-function CommentInputBar() {
+function CommentInputBar(props: { onSend: (content: string) => void }) {
   const [value, setValue] = useState("");
 
-  function handleSend() {
-    console.log(value);
-  }
-
   return (
-    <FixedView
-      position='bottom'
+    <Flex
+      align='center'
+      gutter={8}
       style={{
-        borderTop: "1px solid #eee",
+        padding: "8px 0",
+        borderBottom: "1px solid #eee",
+        marginBottom: "8px",
         backgroundColor: "#fff",
         zIndex: 100,
       }}
     >
-      <Flex
-        align='center'
-        gutter={20}
-        style={{
-          padding: "8px 8px",
-        }}
-      >
-        <Flex.Item span={18}>
-          <Input
-            placeholder='请输入评论'
-            value={value}
-            onChange={(e) => setValue(e.detail.value)}
-          />
-        </Flex.Item>
-        <Flex.Item span={6}>
-          <Button
-            color='primary'
-            shape='round'
-            size='small'
-            block
-            onClick={handleSend}
-          >
-            发送
-          </Button>
-        </Flex.Item>
-      </Flex>
-    </FixedView>
+      <Flex.Item span={3}>
+        <Button
+          color='info'
+          shape='round'
+          size='small'
+          variant='text'
+          block
+          onClick={() => props.onSend(value)}
+        >
+          <ArrowDown size={16} />
+        </Button>
+      </Flex.Item>
+      <Flex.Item span={17}>
+        <Input
+          placeholder='请输入评论'
+          value={value}
+          onChange={(e) => setValue(e.detail.value)}
+        />
+      </Flex.Item>
+      <Flex.Item span={4}>
+        <Button
+          color='primary'
+          shape='round'
+          size='small'
+          block
+          onClick={() => props.onSend(value)}
+        >
+          <Share size={16} />
+        </Button>
+      </Flex.Item>
+    </Flex>
   );
 }
 
@@ -185,7 +191,6 @@ function Index() {
 
   return (
     <View className='community-detail-page'>
-      <CommentInputBar />
       {post && <PageContent post={post} comments={comments} />}
     </View>
   );
