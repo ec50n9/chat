@@ -2,12 +2,12 @@ import { ScrollView, View, Image } from "@tarojs/components";
 import { useState, useEffect, useRef } from "react";
 import { Share, Comment, Like, ArrowDown } from "@taroify/icons";
 import Taro, { usePageScroll } from "@tarojs/taro";
-import AuthorInfo from "../components/author-info";
+import { List, Loading, PullRefresh } from "@taroify/core";
 
+import AuthorInfo from "../components/author-info";
 import { Circle, Post, getCircles, getPosts } from "../api";
 import SearchBar from "../components/search-bar";
 import "./index.scss";
-import { List, Loading, PullRefresh } from "@taroify/core";
 
 // 顶部圈子列表
 function CircleList(props: {
