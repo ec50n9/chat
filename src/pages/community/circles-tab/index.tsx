@@ -2,7 +2,7 @@ import { ScrollView, View, Image } from "@tarojs/components";
 import { useState, useEffect, useRef } from "react";
 import { Share, Comment, Like, ArrowDown } from "@taroify/icons";
 import Taro, { usePageScroll } from "@tarojs/taro";
-import { List, Loading, PullRefresh } from "@taroify/core";
+import { Flex, List, Loading, PullRefresh } from "@taroify/core";
 
 import PostItem from "../components/post-item";
 import { Circle, Post, getCircles, getPosts } from "../api";
@@ -15,26 +15,100 @@ function CircleList(props: {
   currentId: string;
   onChange: (id: string) => void;
 }) {
+  const [showPanel, setShowPanel] = useState(false);
+  const myCircles: Circle[] = [
+    {
+      id: "1",
+      name: "圈子1",
+    },
+    {
+      id: "2",
+      name: "IT 互联网",
+    },
+    {
+      id: "3",
+      name: "圈子3",
+    },
+    {
+      id: "4",
+      name: "圈子4",
+    },
+    {
+      id: "5",
+      name: "圈子5",
+    },
+  ];
+  const recommendCircle: Circle[] = [
+    {
+      id: "1",
+      name: "圈子1",
+    },
+    {
+      id: "2",
+      name: "IT 互联网",
+    },
+    {
+      id: "3",
+      name: "圈子3",
+    },
+    {
+      id: "4",
+      name: "圈子4",
+    },
+    {
+      id: "5",
+      name: "圈子5",
+    },
+  ];
+
   return (
-    <View className='circle-list-wrapper'>
-      <ScrollView scrollX>
-        <View className='circle-list'>
-          {props.circles.map((circle) => (
-            <View
-              className={`circle-list__item ${
-                circle.id === props.currentId ? "circle-list__item--active" : ""
-              }`}
-              key={circle.id}
-              onClick={() => props.onChange(circle.id)}
-            >
-              {circle.name}
-            </View>
-          ))}
+    <View>
+      <View className='circle-list-wrapper'>
+        <ScrollView scrollX>
+          <View className='circle-list'>
+            {props.circles.map((circle) => (
+              <View
+                className={`circle-list__item ${
+                  circle.id === props.currentId
+                    ? "circle-list__item--active"
+                    : ""
+                }`}
+                key={circle.id}
+                onClick={() => props.onChange(circle.id)}
+              >
+                {circle.name}
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+        <View className='circle-list__item circle-list__item--pin'>
+          <ArrowDown onClick={() => setShowPanel(!showPanel)} />
+          {/* <Plus color='#e76038' style={{ marginRight: ".2rem" }} /> */}
         </View>
-      </ScrollView>
-      <View className='circle-list__item circle-list__item--pin'>
-        <ArrowDown />
-        {/* <Plus color='#e76038' style={{ marginRight: ".2rem" }} /> */}
+      </View>
+      <View
+        className={`circle-panel-wrapper ${
+          showPanel ? "" : "circle-panel-wrapper--hidden"
+        }`}
+      >
+        <View className='circle-panel'>
+          <View className='circle-panel__title'>我的圈子</View>
+          <View className='circle-panel__list'>
+            {myCircles.map((circle) => (
+              <View key={circle.id} className='circle-panel__item'>
+                {circle.name}
+              </View>
+            ))}
+          </View>
+          <View className='circle-panel__title'>推荐圈子</View>
+          <View className='circle-panel__list'>
+            {recommendCircle.map((circle) => (
+              <View key={circle.id} className='circle-panel__item'>
+                {circle.name}
+              </View>
+            ))}
+          </View>
+        </View>
       </View>
     </View>
   );
