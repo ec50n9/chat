@@ -2,8 +2,41 @@ import { BaseEventOrig, FormProps, Textarea, View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
 import { useState } from "react";
 import { Arrow } from "@taroify/icons";
+import { Uploader } from "@taroify/core";
 import "@taroify/icons/index.scss";
 import "./index.scss";
+
+function BasicUploader(props: {
+  value: Uploader.File[];
+  onChange: (value: Uploader.File[]) => void;
+}) {
+  function onUpload() {
+    Taro.chooseImage({
+      count: 1,
+      sizeType: ["original", "compressed"],
+      sourceType: ["album", "camera"],
+    }).then(({ tempFiles }) => {
+      props.onChange([
+        ...props.value,
+        ...tempFiles.map((item) => ({
+          url: item.path,
+          type: item.type,
+          name: item.originalFileObj?.name,
+        })),
+      ]);
+    });
+  }
+
+  return (
+    <Uploader
+      value={props.value}
+      multiple
+      maxFiles={9}
+      onUpload={onUpload}
+      onChange={props.onChange}
+    />
+  );
+}
 
 function Index() {
   const { mode } = Taro.getCurrentInstance().router?.params || ({} as any);
@@ -19,10 +52,14 @@ function Index() {
   });
 
   const [content, setContent] = useState("");
+  const [files, setFiles] = useState<Uploader.File[]>([]);
 
   const handleSubmit = (
     event: BaseEventOrig<FormProps.onSubmitEventDetail>
-  ) => {};
+  ) => {
+    console.log(content);
+    console.log(files);
+  };
 
   return (
     <View className='community-publish-page'>
@@ -32,10 +69,12 @@ function Index() {
           className={`header__publish ${
             content.length && "header__publish--active"
           }`}
+          onClick={handleSubmit}
         >
           发布
         </View>
       </View>
+      {/* 文本 */}
       <View className='form'>
         <Textarea
           className='input-content'
@@ -46,7 +85,12 @@ function Index() {
           maxlength={1000}
           confirmType='done'
         />
+        {/* 图片 */}
+        <View className='pics'>
+          <BasicUploader value={files} onChange={setFiles} />
+        </View>
       </View>
+      {/* 圈子 */}
       <View className='circles'>
         <View className='circles__header'>
           <View className='circles__header__title'>选择圈子</View>
