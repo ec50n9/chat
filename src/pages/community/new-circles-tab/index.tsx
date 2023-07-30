@@ -72,6 +72,10 @@ function FilterBar() {
       </DropdownMenu>
       <View
         className='flex-shrink-0 flex items-center px-5'
+        style={{
+          background: top ? "#999" : "#fff",
+          color: top ? "#fff" : "#000",
+        }}
         onClick={() => setTop(!top)}
       >
         置顶 <FilterOutlined color={top ? "#fff" : "#000"} size={18} />
@@ -195,7 +199,7 @@ function HotCircles() {
           </View>
         </View>
         <View className='flex-shrink-0 w-xs h-xs rounded overflow-hidden'>
-            <Image src={cover} mode='aspectFill' />
+          <Image src={cover} mode='aspectFill' />
         </View>
       </View>
 
