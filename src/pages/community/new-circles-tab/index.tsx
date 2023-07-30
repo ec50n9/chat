@@ -1,9 +1,17 @@
-import { DropdownMenu, Picker, Popup, Search, Toast } from "@taroify/core";
-import { ArrowDown, Plus } from "@taroify/icons";
+import {
+  DropdownMenu,
+  Flex,
+  Image,
+  Picker,
+  Popup,
+  Search,
+  Toast,
+} from "@taroify/core";
+import { Arrow, ArrowDown, Exchange, Plus } from "@taroify/icons";
 import { View } from "@tarojs/components";
 import { Key, useEffect, useState } from "react";
-import "./index.scss";
 
+// 搜索栏
 function SearchBar() {
   const [value, setValue] = useState("");
   const [open, setOpen] = useState(false);
@@ -21,16 +29,25 @@ function SearchBar() {
         onChange={(e) => setValue(e.detail.value)}
         onCancel={() => setOpen(true)}
       />
+      <View className='h-1 bg-gray-2' />
     </>
   );
 }
 
+// 卡片
+function Card(props) {
+  const { children } = props;
+
+  return <View className='bg-white m-3 p-3 rounded-3'>{children}</View>;
+}
+
+// 筛选栏
 function FilterBar() {
   const [range, setRange] = useState(0);
   const [sort, setSort] = useState(0);
 
   return (
-    <DropdownMenu>
+    <DropdownMenu style={{ "--dropdown-menu-box-shadow": "none" }}>
       <DropdownMenu.Item value={range} onChange={setRange}>
         <DropdownMenu.Option value={0}>全部</DropdownMenu.Option>
         <DropdownMenu.Option value={1}>我创建的</DropdownMenu.Option>
@@ -49,8 +66,8 @@ function FilterBar() {
 function IntroBar() {
   return (
     <>
-      <View className='intro-bar card'>
-        <View style={{ textAlign: "center", marginBottom: "var(--gap-xs)", fontSize: "var(--font-lg)" }}>什么是圈子</View>
+      <Card>
+        <View className='text-lg text-center mb-3'>什么是圈子</View>
         <View className='intro-bar__desc'>
           1. 圈子是用于同圈子内部人员私密交流场。
           <br />
@@ -58,20 +75,130 @@ function IntroBar() {
           <br />
           3. 也可以创建收费圈子，做个自由职业者。
         </View>
-      </View>
-      <View className='card' style={{textAlign: "center"}}>
-        参加创作者计划创建付费圈子 <Plus />
-      </View>
+      </Card>
+
+      <Card>
+        <View className='text-center'>
+          参加创作者计划创建付费圈子 <Plus />
+        </View>
+      </Card>
     </>
+  );
+}
+
+// 热门圈子项目
+function HotCircles() {
+  const title = "圈子热度周榜";
+  const desc = "每周更新 | 查看完整榜单";
+  const cover = "https://img01.yzcdn.cn/vant/cat.jpeg";
+  const hotCircles = [
+    {
+      id: "1",
+      name: "广州大学校友圈",
+    },
+    {
+      id: "2",
+      name: "广州大学校友圈",
+    },
+  ];
+
+  return (
+    <View className='my-3 bg-gray-1 rounded-3 overflow-hidden'>
+      <View className='flex items-center bg-gray-3'>
+        <View className='flex-grow py-2 px-3'>
+          <View className='text-xl'>{title}</View>
+          <View className='mt-1 text-md text-gray-5'>
+            {desc} <Arrow />
+          </View>
+        </View>
+        <View className='flex-shrink-0 w-sm h-sm'>
+          <Image src={cover} mode='aspectFill' />
+        </View>
+      </View>
+
+      <View className='flex flex-col gap-y-2 p-3'>
+        {hotCircles.map((circle, index) => (
+          <View key={circle.id}>
+            {index + 1}. {circle.name}
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+// 热门圈子卡片
+function HotCirclesCard() {
+  return (
+    <Card>
+      <Flex justify='space-between' align='center'>
+        <Flex.Item className='text-xl text-center'>热门圈子</Flex.Item>
+        <Flex.Item className='text-gray text-center'>查看更多</Flex.Item>
+      </Flex>
+      <HotCircles />
+      <HotCircles />
+    </Card>
+  );
+}
+
+// 可能感兴趣的圈子，卡片
+function InterestCirclesCard() {
+  const circles = [
+    {
+      id: "1",
+      name: "广州大学校友圈",
+      cover: "https://img01.yzcdn.cn/vant/cat.jpeg",
+      members: 123,
+      views: 123,
+    },
+    {
+      id: "2",
+      name: "广州大学校友圈",
+      cover: "https://img01.yzcdn.cn/vant/cat.jpeg",
+      members: 123,
+      views: 123,
+    },
+  ];
+
+  return (
+    <Card>
+      <Flex justify='space-between' align='center'>
+        <Flex.Item className='text-xl text-center'>你可能感兴趣</Flex.Item>
+        <Flex.Item className='text-gray text-center'>
+          换一批 <Exchange />
+        </Flex.Item>
+      </Flex>
+      <View>
+        {circles.map((circle) => (
+          <View key={circle.id} className='flex gap-x-3 mt-3'>
+            <View className='flex-shrink-0 w-xs h-xs'>
+              <Image src={circle.cover} mode='aspectFill' />
+            </View>
+            <View className='flex-grow flex flex-col justify-between py-2'>
+              <View className='flex justify-between items-center'>
+                <View className='text-lg'>{circle.name}</View>
+                <Plus size={18} />
+              </View>
+              <View className='text-gray-5'>
+                {circle.members} 成员 · {circle.views} 浏览
+              </View>
+            </View>
+          </View>
+        ))}
+      </View>
+    </Card>
   );
 }
 
 export default function Index() {
   return (
-    <View className='circles-tab'>
+    <View className='text-base'>
       <SearchBar />
       <FilterBar />
       <IntroBar />
+      <HotCirclesCard />
+      <InterestCirclesCard />
+      <View className='h-md' />
     </View>
   );
 }
