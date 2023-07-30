@@ -7,7 +7,13 @@ import {
   Search,
   Toast,
 } from "@taroify/core";
-import { Arrow, ArrowDown, Exchange, Plus } from "@taroify/icons";
+import {
+  Arrow,
+  ArrowDown,
+  Exchange,
+  FilterOutlined,
+  Plus,
+} from "@taroify/icons";
 import { View } from "@tarojs/components";
 import { Key, useEffect, useState } from "react";
 
@@ -45,20 +51,32 @@ function Card(props) {
 function FilterBar() {
   const [range, setRange] = useState(0);
   const [sort, setSort] = useState(0);
+  const [top, setTop] = useState(false);
 
   return (
-    <DropdownMenu style={{ "--dropdown-menu-box-shadow": "none" }}>
-      <DropdownMenu.Item value={range} onChange={setRange}>
-        <DropdownMenu.Option value={0}>全部</DropdownMenu.Option>
-        <DropdownMenu.Option value={1}>我创建的</DropdownMenu.Option>
-        <DropdownMenu.Option value={2}>我加入的</DropdownMenu.Option>
-      </DropdownMenu.Item>
-      <DropdownMenu.Item value={sort} onChange={setSort}>
-        <DropdownMenu.Option value={0}>默认排序</DropdownMenu.Option>
-        <DropdownMenu.Option value={1}>时间正序</DropdownMenu.Option>
-        <DropdownMenu.Option value={2}>时间倒序</DropdownMenu.Option>
-      </DropdownMenu.Item>
-    </DropdownMenu>
+    <View className='flex bg-white'>
+      <DropdownMenu
+        className='flex-grow'
+        style={{ "--dropdown-menu-box-shadow": "none" }}
+      >
+        <DropdownMenu.Item value={range} onChange={setRange}>
+          <DropdownMenu.Option value={0}>全部</DropdownMenu.Option>
+          <DropdownMenu.Option value={1}>我创建的</DropdownMenu.Option>
+          <DropdownMenu.Option value={2}>我加入的</DropdownMenu.Option>
+        </DropdownMenu.Item>
+        <DropdownMenu.Item value={sort} onChange={setSort}>
+          <DropdownMenu.Option value={0}>默认排序</DropdownMenu.Option>
+          <DropdownMenu.Option value={1}>时间正序</DropdownMenu.Option>
+          <DropdownMenu.Option value={2}>时间倒序</DropdownMenu.Option>
+        </DropdownMenu.Item>
+      </DropdownMenu>
+      <View
+        className='flex-shrink-0 flex items-center px-5'
+        onClick={() => setTop(!top)}
+      >
+        置顶 <FilterOutlined color={top ? "#fff" : "#000"} size={18} />
+      </View>
+    </View>
   );
 }
 
@@ -86,6 +104,71 @@ function IntroBar() {
   );
 }
 
+// 已加入的圈子
+function JoinedCircles() {
+  const [value, setValue] = useState("");
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState<Key[]>([]);
+
+  const circles = [
+    {
+      id: "1",
+      name: "广州大学校友圈",
+      author: {
+        id: "1",
+        username: "陈霸先",
+        avatar: "https://img01.yzcdn.cn/vant/cat.jpeg",
+      },
+    },
+    {
+      id: "2",
+      name: "广州大学校友圈",
+      author: {
+        id: "1",
+        username: "陈霸先",
+        avatar: "https://img01.yzcdn.cn/vant/cat.jpeg",
+      },
+    },
+  ];
+
+  return (
+    <Card>
+      <Flex justify='space-between' align='center'>
+        <Flex.Item className='text-xl text-center'>已加入的圈子</Flex.Item>
+        <Flex.Item className='text-gray text-center'>
+          所有 <Arrow />
+        </Flex.Item>
+      </Flex>
+
+      <View className='mt-3 grid grid-cols-2 gap-3'>
+        {circles.map((circle) => (
+          <View
+            key={circle.id}
+            className='rounded-3 border-2 border-solid border-gray-3 overflow-hidden'
+          >
+            <View className='h-xl'>
+              <Image
+                src='https://img01.yzcdn.cn/vant/cat.jpeg'
+                mode='aspectFill'
+              />
+            </View>
+            <View className='mt-2 px-2 text-lg'>{circle.name}</View>
+            <View className='p-2 flex justify-between items-center text-gray'>
+              <View>{circle.author.username}</View>
+              <View className='w-48 h-48 rounded-full overflow-hidden'>
+                <Image
+                  src='https://img01.yzcdn.cn/vant/cat.jpeg'
+                  mode='aspectFill'
+                />
+              </View>
+            </View>
+          </View>
+        ))}
+      </View>
+    </Card>
+  );
+}
+
 // 热门圈子项目
 function HotCircles() {
   const title = "圈子热度周榜";
@@ -104,15 +187,15 @@ function HotCircles() {
 
   return (
     <View className='my-3 bg-gray-1 rounded-3 overflow-hidden'>
-      <View className='flex items-center bg-gray-3'>
+      <View className='flex items-center bg-gray-7  pr-6 pt-3'>
         <View className='flex-grow py-2 px-3'>
-          <View className='text-xl'>{title}</View>
-          <View className='mt-1 text-md text-gray-5'>
+          <View className='text-xl text-white'>{title}</View>
+          <View className='mt-1 text-md text-gray-3'>
             {desc} <Arrow />
           </View>
         </View>
-        <View className='flex-shrink-0 w-sm h-sm'>
-          <Image src={cover} mode='aspectFill' />
+        <View className='flex-shrink-0 w-xs h-xs rounded overflow-hidden'>
+            <Image src={cover} mode='aspectFill' />
         </View>
       </View>
 
@@ -196,6 +279,7 @@ export default function Index() {
       <SearchBar />
       <FilterBar />
       <IntroBar />
+      <JoinedCircles />
       <HotCirclesCard />
       <InterestCirclesCard />
       <View className='h-md' />
