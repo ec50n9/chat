@@ -1,10 +1,12 @@
 import { View, Image } from "@tarojs/components";
 import { Plus } from "@taroify/icons";
+import { Flex } from "@taroify/core";
+import Taro from "@tarojs/taro";
 import "@taroify/icons/index.scss";
 import "./index.scss";
-import { Flex } from "@taroify/core";
 
 type Author = {
+  id: string;
   name: string;
   avatar: string;
   timestamp: number;
@@ -28,8 +30,17 @@ function Index(
     onFollow?: () => void;
   }
 ) {
+  const gotoUserDetails = (e) => {
+    console.log("goto user details");
+    e.preventDefault();
+    e.stopPropagation();
+    Taro.navigateTo({
+      url: `/pages/user-details/index?id=${props.id ?? "abc"}`,
+    });
+  };
+
   return (
-    <View className='post-item__header'>
+    <View className='post-item__header' onClick={gotoUserDetails}>
       <View className='post-item__header__avatar'>
         <Image src={props.avatar} />
       </View>

@@ -5,7 +5,7 @@ import { Plus, Edit } from "@taroify/icons";
 import Taro from "@tarojs/taro";
 
 import "./index.scss";
-import CircleTab from "./circles-tab";
+import CircleTab from "./new-circles-tab";
 import ExploreTab from "./explore-tab";
 import SquareTab from "./square-tab";
 
