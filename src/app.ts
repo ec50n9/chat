@@ -1,5 +1,6 @@
 import { PropsWithChildren } from 'react'
 import { useLaunch } from '@tarojs/taro'
+import 'uno.css'
 import "@taroify/core/index.scss"
 import "@taroify/icons/index.scss"
 import './app.scss'
