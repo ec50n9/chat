@@ -90,12 +90,10 @@ function IntroBar() {
     <>
       <Card>
         <View className='text-lg text-center mb-3'>什么是圈子</View>
-        <View className='intro-bar__desc'>
-          1. 圈子是用于同圈子内部人员私密交流场。
-          <br />
-          2. 可以创建如校友圈、工作圈、运动圈等。
-          <br />
-          3. 也可以创建收费圈子，做个自由职业者。
+        <View>
+          <View>1. 圈子是用于同圈子内部人员私密交流场。</View>
+          <View>2. 可以创建如校友圈、工作圈、运动圈等。</View>
+          <View>3. 也可以创建收费圈子，做个自由职业者。</View>
         </View>
       </Card>
 
