@@ -1,5 +1,6 @@
 export default defineAppConfig({
   pages: [
+    "pages/home/index",
     "pages/community/index",
     "pages/community-detail/index",
     "pages/community-publish/index",
