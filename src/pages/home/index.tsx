@@ -10,7 +10,7 @@ function CommonHeader() {
   function share() {}
 
   return (
-    <View className='flex gap-4 items-center bg-white m-3 mb-0 p-3 rd-4'>
+    <View className='flex gap-4 items-center bg-white m-2 mb-0 p-3 rd-2'>
       <Friends className='shrink-0 p-1 b b-solid b-gray rd-full' size={24} />
       <View className='grow c-blue-5 text-sm'>分享给朋友赚现金红包！！！</View>
       <View
@@ -40,7 +40,7 @@ function ListItem(props: { item: AiItem }) {
   }
 
   return (
-    <View className='flex gap-3 bg-white m-3 p-3 rd-4' onClick={gotoDetail}>
+    <View className='flex gap-3 bg-white m-2 p-3 rd-2' onClick={gotoDetail}>
       <Avatar src={item.icon} size='medium' />
       <View className='flex flex-col gap-.5'>
         <View>{item.name}</View>
