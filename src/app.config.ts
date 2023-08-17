@@ -13,6 +13,7 @@ export default defineAppConfig({
     "pages/activity-mine/index",
     "pages/activity-invite/index",
     "pages/user-details/index",
+    "pages/mall/index"
   ],
   window: {
     backgroundTextStyle: "light",
