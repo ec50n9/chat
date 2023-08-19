@@ -14,7 +14,8 @@ export default defineAppConfig({
     "pages/activity-invite/index",
     "pages/user-details/index",
     "pages/mall/index",
-    "pages/mask-list/index"
+    "pages/mask-list/index",
+    "pages/my-order/index"
   ],
   window: {
     backgroundTextStyle: "light",
