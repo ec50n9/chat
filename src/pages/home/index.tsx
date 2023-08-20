@@ -41,13 +41,13 @@ function ListItem(props: { item: AiItem }) {
 
   return (
     <View className='flex gap-3 bg-white m-2 p-3 rd-2' onClick={gotoDetail}>
-      <Avatar src={item.icon} size='medium' />
-      <View className='flex flex-col gap-.5'>
+      <Avatar className="shrink-0" src={item.icon} size='medium' />
+      <View className='flex flex-col gap-.5 of-hidden'>
         <View>{item.name}</View>
         <View className='text-sm c-gray-5'>
           <ChatOutlined /> {item.statistics}
         </View>
-        <View className='text-sm c-gray-5'>{item.desc}</View>
+        <View className='text-sm c-gray-5 truncate'>{item.desc}</View>
       </View>
     </View>
   );
@@ -80,7 +80,7 @@ function CommonList(props: { listId: string }) {
           icon: "https://img.yzcdn.cn/vant/cat.jpeg",
           name: `AI小助手${listId}-${num}`,
           statistics: 1000 + num,
-          desc: "这是一段描述",
+          desc: "这是一段描述常常这是一段描述常常这是一段描述常常这是一段描述常常这是一段描述常常这是一段描述常常这是一段描述常常这是一段描述常常这是一段描述常常这是一段描述常常",
         });
       }
       setList(newList);
