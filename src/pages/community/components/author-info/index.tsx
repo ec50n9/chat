@@ -1,9 +1,7 @@
 import { View, Image } from "@tarojs/components";
 import { Plus } from "@taroify/icons";
-import { Flex } from "@taroify/core";
 import Taro from "@tarojs/taro";
 import "@taroify/icons/index.scss";
-import "./index.scss";
 
 type Author = {
   id: string;
@@ -40,29 +38,23 @@ function Index(
   };
 
   return (
-    <View className='post-item__header' onClick={gotoUserDetails}>
-      <View className='post-item__header__avatar'>
+    <View className='flex items-center gap-3' onClick={gotoUserDetails}>
+      <View className='w-72 h-72 rd-full of-hidden'>
         <Image src={props.avatar} />
       </View>
 
-      <View className='post-item__header__info'>
-        <View className='post-item__header__info__name'>{props.name}</View>
-        <View className='post-item__header__info__desc'>
+      <View className='grow'>
+        <View>{props.name}</View>
+        <View className='c-gray-7 text-xs'>
           {timestampToTime(props.timestamp)}
         </View>
       </View>
 
       {props.showFollowed && (
-        <Flex direction='column' align='center'>
-          <View className='post-item__header__follow'>
-            <Plus />
-            关注
-          </View>
-          <View className='post-item__header__follow post-item__header__follow--silent'>
-            <Plus />
-            默默支持
-          </View>
-        </Flex>
+        <View className='shrink-0 flex gap-1 items-center justify-center c-[#e76038] b-3 b-solid b-[#e76038] rd-full py-.5 px-2 text-sm'>
+          <Plus />
+          关注
+        </View>
       )}
     </View>
   );

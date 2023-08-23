@@ -4,16 +4,15 @@ import Taro from "@tarojs/taro";
 import { useState, useEffect } from "react";
 import { Post } from "../../api";
 import AuthorInfo from "../author-info";
-import './index.scss'
 
 // 文章圈子列表
 function PostItemCircles(props: { circles: string[] }) {
   let circles = props.circles;
   if (!circles || !circles.length) circles = ["漂流者"];
   return (
-    <View className='post-item__circles'>
+    <View className='flex flex-wrap gap-3 pt-3 c-gray-7 b-t-1 b-t-solid b-t-gray-2'>
       {circles.map((circle) => (
-        <View className='post-item__circles__item' key={circle}>
+        <View className='text-xs py-1.5 px-3 bg-gray-2 rd-full' key={circle}>
           # {circle}
         </View>
       ))}
@@ -36,11 +35,11 @@ function PostItemActions(props: {
   actions: { icon: JSX.Element; text: string }[];
 }) {
   return (
-    <View className='post-item__actions'>
+    <View className='flex justify-around gap-3 c-gray-5'>
       {props.actions.map((action) => (
-        <View className='post-item__actions__item' key={action.text}>
+        <View className='flex items-center gap-3 py-1' key={action.text}>
           {action.icon}
-          <View className='post-item__actions__item__text'>{action.text}</View>
+          <View className='text-xs'>{action.text}</View>
         </View>
       ))}
     </View>
@@ -91,15 +90,15 @@ export default function PostItem(props: {post: Post}) {
   };
 
   return (
-    <View className='post-item' onClick={gotoDetail}>
+    <View className='flex flex-col gap-3 p-3 bg-white rd-3 shadow' onClick={gotoDetail}>
       <AuthorInfo {...props.post.author} timestamp={props.post.createdAt} showFollowed />
 
-      <View className='post-item__content'>
+      <View className='text-sm leading-normal'>
         {content}
         {lineCount > 3 ? (
           <>
             {expanded ? "" : "... "}
-            <View className='post-item__content__expand' onClick={handleExpand}>
+            <View className='inline-block c-[#e76038]' onClick={handleExpand}>
               {expanded ? "收起" : "展开"}
             </View>
           </>
@@ -108,10 +107,10 @@ export default function PostItem(props: {post: Post}) {
         )}
       </View>
 
-      <View className='post-item__images'>
+      <View className='grid grid-cols-3 gap-2'>
         {props.post.images?.map((image, index) => (
           <Image
-            className='post-item__images__item'
+            className='w-full h-full object-cover rd-3'
             src={image}
             key={image + index}
           />

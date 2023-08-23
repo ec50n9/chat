@@ -79,7 +79,7 @@ export default function Index() {
   const [currentTab, setCurrentTab] = useState(0);
 
   return (
-    <View className='community-page'>
+    <View className='h-full community-page'>
       <TTabs
         className='tabs'
         value={currentTab}

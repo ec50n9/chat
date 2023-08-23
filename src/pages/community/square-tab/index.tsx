@@ -1,11 +1,10 @@
-import { ScrollView, View } from "@tarojs/components";
+import { View } from "@tarojs/components";
 import { useEffect, useRef, useState } from "react";
 import { PullRefresh, List, Loading } from "@taroify/core";
 import { usePageScroll } from "@tarojs/taro";
 import SearchBar from "../components/search-bar";
 import PostItem from "../components/post-item";
 import CircleItem from "../components/circle-item";
-import "./index.scss";
 
 function MixedList(props: { circles: any[] }) {
   const item2Jsx = (item: any, key: any) => {
@@ -16,7 +15,7 @@ function MixedList(props: { circles: any[] }) {
   };
 
   return (
-    <View className='circle-list'>
+    <View className='flex flex-col gap-3 px-3 pb-3'>
       {props.circles.map((circle) => item2Jsx(circle, circle.id))}
     </View>
   );
@@ -131,9 +130,9 @@ function Index() {
   };
 
   return (
-    <View className='square-tab'>
+    <View className='flex flex-col h-full'>
       <PullRefresh
-        className='scroll-view'
+        className='grow'
         loading={refreshingRef.current}
         reachTop={reachTop}
         onRefresh={() => onRefresh(1)}

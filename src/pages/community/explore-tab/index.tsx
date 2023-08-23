@@ -6,23 +6,20 @@ import { PullRefresh, List, Loading } from "@taroify/core";
 import "@taroify/icons/index.scss";
 import SearchBar from "../components/search-bar";
 import { Article } from "../api";
-import "./index.scss";
 
 function ArticleItem(props: { article: Article }) {
   const article = props.article;
   return (
-    <View className='article-item'>
-      <View className='article-item__cover' />
-      <View className='article-item__title'>{article.title}</View>
-      <View className='article-item__info'>
-        <View className='article-item__info__avatar'>
-          <Image src={article.author.avatar} />
+    <View className='flex flex-col gap-3 h-[500px] p-3 bg-white rd-3 of-hidden'>
+      <View className='grow rd-2 of-hidden bg-blue-2'></View>
+      <View className='shrink-0'>{article.title}</View>
+      <View className='shrink-0 flex items-center gap-2 c-gray-7 text-sm'>
+        <View className='shrink-0 w-40 h-40 bg-gray-7 rd-3'>
+          <Image className='w-full h-full' src={article.author.avatar} />
         </View>
-        <View className='article-item__info__author'>
-          {article.author.name}
-        </View>
-        <View className='article-item__info__like'>
-          <LikeOutlined style={{ marginRight: "4px" }} />
+        <View className='grow'>{article.author.name}</View>
+        <View className='shrink-0'>
+          <LikeOutlined className='mr-1' />
           {article.likeCount}
         </View>
       </View>
@@ -32,7 +29,7 @@ function ArticleItem(props: { article: Article }) {
 
 function ArticleList(props: { articles: Article[] }) {
   return (
-    <View className='article-list'>
+    <View className='grid grid-cols-2 gap-3 px-3 pb-3'>
       {props.articles.map((article) => (
         <ArticleItem article={article} key={article.id} />
       ))}
@@ -143,9 +140,9 @@ function Index() {
   };
 
   return (
-    <View className='explore-tab'>
+    <View className='flex flex-col h-full'>
       <PullRefresh
-        className='scroll-view'
+        className='grow'
         loading={refreshingRef.current}
         reachTop={reachTop}
         onRefresh={() => onRefresh(1)}
