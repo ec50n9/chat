@@ -47,7 +47,7 @@ function ListItem(props: { item: AiItem }) {
         <View className='text-sm c-gray-5'>
           <ChatOutlined /> {item.statistics}
         </View>
-        <View className='text-sm c-gray-5 truncate'>{item.desc}</View>
+        <View className='text-sm c-gray-5 line-3'>{item.desc}</View>
       </View>
     </View>
   );
