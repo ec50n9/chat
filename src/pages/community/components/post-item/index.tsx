@@ -90,7 +90,7 @@ export default function PostItem(props: {post: Post}) {
   };
 
   return (
-    <View className='flex flex-col gap-3 p-3 bg-white rd-3 shadow' onClick={gotoDetail}>
+    <View className='flex flex-col gap-3 p-3 bg-white rd-3' onClick={gotoDetail}>
       <AuthorInfo {...props.post.author} timestamp={props.post.createdAt} showFollowed />
 
       <View className='text-sm leading-normal'>

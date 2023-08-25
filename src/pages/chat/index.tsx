@@ -113,7 +113,10 @@ function Chat() {
     if (!inited && messages.length > 0) setInited(true);
   };
   useEffect(() => {
-    setTimeout(scrollToBottom, 10);
+    setTimeout(() => {
+      scrollToBottom();
+      console.log("hello, bottom");
+    }, 100);
   }, [messages]);
 
   // 输入框

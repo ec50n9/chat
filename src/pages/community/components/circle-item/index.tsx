@@ -3,7 +3,7 @@ import { Circle } from "../../api";
 
 export default function CircleItem(props: { circle: Circle }) {
   return (
-    <View className='flex gap-3 bg-white p-3 rd-3 shadow'>
+    <View className='flex gap-3 bg-white p-3 rd-3'>
       <View className='shrink-0 w-80 h-80 bg-[#e76038] rd-2'></View>
       <View className='grow flex flex-col gap-1'>
         <View className='flex justify-between items-center'>

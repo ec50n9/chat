@@ -54,7 +54,7 @@ function FilterBar() {
   const [top, setTop] = useState(false);
 
   return (
-    <View className='flex bg-white'>
+    <View className='flex bg-white text-sm'>
       <DropdownMenu
         className='flex-grow'
         style={{ "--dropdown-menu-box-shadow": "none" }}
@@ -136,7 +136,7 @@ function JoinedCircles() {
   return (
     <Card>
       <Flex justify='space-between' align='center'>
-        <Flex.Item className='text-xl text-center'>已加入的圈子</Flex.Item>
+        <Flex.Item className='text-lg text-center'>已加入的圈子</Flex.Item>
         <Flex.Item className='text-gray text-center'>
           所有 <Arrow />
         </Flex.Item>
@@ -154,8 +154,8 @@ function JoinedCircles() {
                 mode='aspectFill'
               />
             </View>
-            <View className='mt-2 px-2 text-lg'>{circle.name}</View>
-            <View className='p-2 flex justify-between items-center text-gray'>
+            <View className='mt-2 px-2'>{circle.name}</View>
+            <View className='p-2 flex justify-between items-center text-gray text-sm'>
               <View>{circle.author.username}</View>
               <View className='w-48 h-48 rounded-full overflow-hidden'>
                 <Image
@@ -191,8 +191,8 @@ function HotCircles() {
     <View className='my-3 bg-gray-1 rounded-3 overflow-hidden'>
       <View className='flex items-center bg-gray-7  pr-6 pt-3'>
         <View className='flex-grow py-2 px-3'>
-          <View className='text-xl text-white'>{title}</View>
-          <View className='mt-1 text-md text-gray-3'>
+          <View className='text-lg text-white'>{title}</View>
+          <View className='mt-1 text-sm text-gray-3'>
             {desc} <Arrow />
           </View>
         </View>
@@ -217,7 +217,7 @@ function HotCirclesCard() {
   return (
     <Card>
       <Flex justify='space-between' align='center'>
-        <Flex.Item className='text-xl text-center'>热门圈子</Flex.Item>
+        <Flex.Item className='text-lg text-center'>热门圈子</Flex.Item>
         <Flex.Item className='text-gray text-center'>查看更多</Flex.Item>
       </Flex>
       <HotCircles />
@@ -248,7 +248,7 @@ function InterestCirclesCard() {
   return (
     <Card>
       <Flex justify='space-between' align='center'>
-        <Flex.Item className='text-xl text-center'>你可能感兴趣</Flex.Item>
+        <Flex.Item className='text-lg text-center'>你可能感兴趣</Flex.Item>
         <Flex.Item className='text-gray text-center'>
           换一批 <Exchange />
         </Flex.Item>
