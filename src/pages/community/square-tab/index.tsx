@@ -1,10 +1,87 @@
 import { View } from "@tarojs/components";
 import { useEffect, useRef, useState } from "react";
-import { PullRefresh, List, Loading } from "@taroify/core";
+import { PullRefresh, List, Loading, Swiper, Avatar } from "@taroify/core";
 import { usePageScroll } from "@tarojs/taro";
 import SearchBar from "../components/search-bar";
 import PostItem from "../components/post-item";
 import CircleItem from "../components/circle-item";
+import { Arrow } from "@taroify/icons";
+
+type TopicItem = {
+  id: string;
+  sort: number;
+  name: string;
+  commentCount: number;
+  readCount: number;
+  avatars: string[];
+};
+
+function HotTopicItem(props: { item: TopicItem }) {
+  const { item } = props;
+  return (
+    <View className='flex items-center gap-3 py-2 px-4 bg-orange-100'>
+      <View className='shrink-0'>{item.sort}</View>
+      <Avatar
+        className='shrink-0'
+        src='https://joeschmoe.io/api/v1/random'
+        shape='rounded'
+        size="medium"
+      />
+      <View className='grow'>
+        <View>{item.name}</View>
+        <View className='mt-1 flex justify-between text-sm c-gray-5'>
+          <Avatar.Group>
+            {item.avatars.map((avatar) => (
+              <Avatar size='mini' src={avatar} />
+            ))}
+          </Avatar.Group>
+          <View>{item.commentCount}讨论</View>
+          <View>{item.readCount}阅读</View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function HotTopicList(props: {
+  title: string;
+  moreText: string;
+  onMore?: () => void;
+  items: TopicItem[];
+}) {
+  return (
+    <View className='pt-0 pb-3 px-3'>
+      <View className='flex justify-between pl-2'>
+        <View className="text-lg">{props.title}</View>
+        <View
+          className='flex items-center gap-1 text-sm c-gray-5'
+          onClick={props.onMore}
+        >
+          {props.moreText} <Arrow size={16} />
+        </View>
+      </View>
+
+      <Swiper className="mt-1" loop={false} width={300}>
+        {/* 将items分割成两个一组，每组生成一个SwipeItem */}
+        {props.items.reduce((acc, cur, idx) => {
+          if (idx % 2 === 0) {
+            acc.push(
+              <Swiper.Item key={idx}>
+                <View className='mr-5 rd-3 of-hidden'>
+                  <HotTopicItem item={cur} />
+                  {props.items[idx + 1] && (
+                    <HotTopicItem item={props.items[idx + 1]} />
+                  )}
+                </View>
+              </Swiper.Item>
+            );
+          }
+          return acc;
+        }, [] as any[])}
+      </Swiper>
+    </View>
+  );
+}
 
 function MixedList(props: { circles: any[] }) {
   const item2Jsx = (item: any, key: any) => {
@@ -25,21 +102,6 @@ function Index() {
   const [items, setItems] = useState<any[]>([]);
   useEffect(() => {
     setItems([
-      {
-        type: "circle",
-        id: "1",
-        name: "圈子1",
-      },
-      {
-        type: "circle",
-        id: "2",
-        name: "圈子2",
-      },
-      {
-        type: "circle",
-        id: "6",
-        name: "圈子3",
-      },
       {
         type: "post",
         id: "3",
@@ -129,6 +191,81 @@ function Index() {
     });
   };
 
+  const hotTopicList = [
+    {
+      id: "1",
+      sort: 1,
+      name: "话题1",
+      commentCount: 1,
+      readCount: 2,
+      avatars: [
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+      ],
+    },
+    {
+      id: "2",
+      sort: 2,
+      name: "话题2",
+      commentCount: 1,
+      readCount: 2,
+      avatars: [
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+      ],
+    },
+    {
+      id: "3",
+      sort: 3,
+      name: "话题1",
+      commentCount: 1,
+      readCount: 2,
+      avatars: [
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+      ],
+    },
+    {
+      id: "4",
+      sort: 4,
+      name: "话题2",
+      commentCount: 1,
+      readCount: 2,
+      avatars: [
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+      ],
+    },
+    {
+      id: "5",
+      sort: 5,
+      name: "话题1",
+      commentCount: 1,
+      readCount: 2,
+      avatars: [
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+      ],
+    },
+    {
+      id: "6",
+      sort: 6,
+      name: "话题2",
+      commentCount: 1,
+      readCount: 2,
+      avatars: [
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+        "https://avatars.githubusercontent.com/u/20592923?v=4",
+      ],
+    },
+  ];
+
   return (
     <View className='flex flex-col h-full'>
       <PullRefresh
@@ -145,6 +282,16 @@ function Index() {
           onLoad={() => onLoad(pageNo)}
         >
           <SearchBar />
+          <HotTopicList
+            title='热门话题'
+            moreText='全部话题'
+            items={hotTopicList}
+          />
+          <HotTopicList
+            title='热门圈子'
+            moreText='全部圈子'
+            items={hotTopicList}
+          />
           <MixedList circles={items} />
           {!refreshingRef.current && (
             <List.Placeholder>
