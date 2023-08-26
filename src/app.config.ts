@@ -15,7 +15,8 @@ export default defineAppConfig({
     "pages/user-details/index",
     "pages/mall/index",
     "pages/mask-list/index",
-    "pages/my-order/index"
+    "pages/my-order/index",
+    "pages/msg-list/index",
   ],
   window: {
     backgroundTextStyle: "light",
