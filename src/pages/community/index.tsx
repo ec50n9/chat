@@ -8,6 +8,7 @@ import "./index.scss";
 import CircleTab from "./circles-tab";
 import ExploreTab from "./explore-tab";
 import SquareTab from "./square-tab";
+import PickTab from "./pick-tab";
 
 // 悬浮按钮
 function FloatingButton() {
@@ -75,6 +76,10 @@ export default function Index() {
       title: "发现",
       content: <ExploreTab />,
     },
+    {
+      title: "Pick",
+      content: <PickTab />
+    }
   ];
   const [currentTab, setCurrentTab] = useState(0);
 

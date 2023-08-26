@@ -2,6 +2,7 @@ import { View, Image } from "@tarojs/components";
 import { Plus } from "@taroify/icons";
 import Taro from "@tarojs/taro";
 import "@taroify/icons/index.scss";
+import { Avatar } from "@taroify/core";
 
 type Author = {
   id: string;
@@ -39,9 +40,7 @@ function Index(
 
   return (
     <View className='flex items-center gap-3' onClick={gotoUserDetails}>
-      <View className='w-72 h-72 rd-full of-hidden'>
-        <Image src={props.avatar} />
-      </View>
+      <Avatar className='w-72 h-72 h-full' src={props.avatar} />
 
       <View className='grow'>
         <View>{props.name}</View>
