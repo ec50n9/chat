@@ -21,7 +21,7 @@ import {
   Star,
   StarOutlined,
 } from "@taroify/icons";
-import "./index.scss";
+// import "./index.scss";
 
 // 搜索栏
 function SearchBar() {

@@ -154,7 +154,7 @@ function JoinedCircles() {
                 mode='aspectFill'
               />
             </View>
-            <View className='mt-2 px-2'>{circle.name}</View>
+            <View className='mt-2 px-2 truncate'>{circle.name}</View>
             <View className='p-2 flex justify-between items-center text-gray text-sm'>
               <View>{circle.author.username}</View>
               <View className='w-48 h-48 rounded-full overflow-hidden'>

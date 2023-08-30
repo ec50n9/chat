@@ -17,6 +17,10 @@ export default defineAppConfig({
     "pages/mask-list/index",
     "pages/my-order/index",
     "pages/msg-list/index",
+    "pages/circle-details/index",
+    "pages/common-search/index",
+    "pages/circle-create/index",
+    "pages/circle-create/intro"
   ],
   window: {
     backgroundTextStyle: "light",
