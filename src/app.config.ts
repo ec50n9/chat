@@ -20,7 +20,10 @@ export default defineAppConfig({
     "pages/circle-details/index",
     "pages/common-search/index",
     "pages/circle-create/index",
-    "pages/circle-create/intro"
+    "pages/circle-create/intro",
+    "pages/msg-list/collect/index",
+    "pages/msg-list/comment/index",
+    "pages/msg-list/follow/index",
   ],
   window: {
     backgroundTextStyle: "light",
