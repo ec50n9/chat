@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { PullRefresh, List, Loading, Swiper, Avatar } from "@taroify/core";
 import { usePageScroll } from "@tarojs/taro";
 import SearchBar from "../components/search-bar";
-import PostItem from "../components/post-item";
-import CircleItem from "../components/circle-item";
+import PostItem from "../../../components/post-item";
+import CircleItem from "../../../components/circle-item";
 import { Arrow } from "@taroify/icons";
 
 type TopicItem = {

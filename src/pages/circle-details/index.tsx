@@ -1,6 +1,6 @@
 import { View, Text } from "@tarojs/components";
 import { Avatar, Image, List, Loading, PullRefresh, Tabs } from "@taroify/core";
-import AuthorInfo from "../community/components/author-info";
+import AuthorInfo from "../../components/author-info";
 import { useRef, useState } from "react";
 import loading from "@taroify/core/loading";
 import Taro, { usePageScroll } from "@tarojs/taro";

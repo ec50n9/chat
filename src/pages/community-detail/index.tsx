@@ -10,7 +10,7 @@ import {
   ArrowDown,
 } from "@taroify/icons";
 import "@taroify/icons/index.scss";
-import AuthInfo from "../community/components/author-info";
+import AuthInfo from "../../components/author-info";
 import {
   Post,
   PostComment,

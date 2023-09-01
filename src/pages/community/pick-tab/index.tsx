@@ -9,7 +9,7 @@ import {
 } from "@taroify/core";
 import { View } from "@tarojs/components";
 import { useRef, useState } from "react";
-import AuthorInfo from "../components/author-info";
+import AuthorInfo from "../../../components/author-info";
 import { usePageScroll } from "@tarojs/taro";
 import {
   ChatOutlined,

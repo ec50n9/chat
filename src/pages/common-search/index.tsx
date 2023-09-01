@@ -2,7 +2,7 @@ import { Toast, Search, Tabs, Image } from "@taroify/core";
 import { View } from "@tarojs/components";
 import { useState } from "react";
 import { CommentOutlined, LikeOutlined, StarOutlined } from "@taroify/icons";
-import AuthorInfo from "../community/components/author-info";
+import AuthorInfo from "../../components/author-info";
 
 function SearchBar() {
   const [value, setValue] = useState("");
