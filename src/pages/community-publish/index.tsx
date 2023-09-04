@@ -12,7 +12,7 @@ function BasicUploader(props: {
 }) {
   function onUpload() {
     Taro.chooseImage({
-      count: 1,
+      count: 9 - props.value.length,
       sizeType: ["original", "compressed"],
       sourceType: ["album", "camera"],
     }).then(({ tempFiles }) => {
