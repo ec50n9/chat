@@ -47,7 +47,7 @@ function PostItemActions(props: {
 }
 
 // 文章item
-export default function PostItem(props: {post: Post}) {
+export default function PostItem(props: { post: Post }) {
   // 文章操作相关变量
   const actions = [
     {
@@ -89,9 +89,23 @@ export default function PostItem(props: {post: Post}) {
     });
   };
 
+  const previewImg = (current: string) => {
+    Taro.previewImage({
+      current,
+      urls: props.post.images,
+    });
+  };
+
   return (
-    <View className='flex flex-col gap-3 p-3 bg-white rd-3' onClick={gotoDetail}>
-      <AuthorInfo {...props.post.author} timestamp={props.post.createdAt} showFollowed />
+    <View
+      className='flex flex-col gap-3 p-3 bg-white rd-3'
+      onClick={gotoDetail}
+    >
+      <AuthorInfo
+        {...props.post.author}
+        timestamp={props.post.createdAt}
+        showFollowed
+      />
 
       <View className='text-sm leading-normal'>
         {content}
@@ -113,6 +127,11 @@ export default function PostItem(props: {post: Post}) {
             className='w-full h-full object-cover rd-3'
             src={image}
             key={image + index}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              previewImg(image);
+            }}
           />
         ))}
       </View>

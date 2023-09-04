@@ -203,12 +203,28 @@ function Highlights() {
     "https://img01.yzcdn.cn/vant/cat.jpeg",
   ];
 
+  const previewImage = (url: string) => {
+    Taro.previewImage({
+      current: url,
+      urls: imgs,
+    });
+  };
+
   return (
     <View className='p-3'>
       <View className='text-xl'>圈子亮点</View>
       <View className='mt-2 flex flex-col'>
         {imgs.map((img, index) => (
-          <Image key={index} className='w-full' src={img} />
+          <Image
+            key={index}
+            className='w-full'
+            src={img}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              previewImage(img);
+            }}
+          />
         ))}
       </View>
     </View>
@@ -315,6 +331,13 @@ function JoinedCircleItem(props: {
     },
   } = props;
 
+  const previewImage = (current: string) => {
+    Taro.previewImage({
+      current,
+      urls: coverList,
+    });
+  };
+
   return (
     <View className='flex flex-col p-3 pb-0 rd rd-4 b-2 b-solid b-gray-3'>
       <AuthorInfo
@@ -334,6 +357,11 @@ function JoinedCircleItem(props: {
             key={index}
             src={cover}
             className='w-full h-full object-cover rd-3'
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              previewImage(cover);
+            }}
           />
         ))}
       </View>
