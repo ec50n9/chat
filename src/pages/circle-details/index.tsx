@@ -1,8 +1,7 @@
-import { View, Text } from "@tarojs/components";
-import { Avatar, Image, List, Loading, PullRefresh, Tabs } from "@taroify/core";
+import { View, Image, Text } from "@tarojs/components";
+import { Avatar, List, Loading, PullRefresh, Tabs } from "@taroify/core";
 import AuthorInfo from "../../components/author-info";
 import { useRef, useState } from "react";
-import loading from "@taroify/core/loading";
 import Taro, { usePageScroll } from "@tarojs/taro";
 import {
   ChatOutlined,
@@ -12,26 +11,17 @@ import {
   Star,
   StarOutlined,
 } from "@taroify/icons";
+import "./index.scss";
 
-function Ellipsis(props: { content: string; rows?: number }) {
-  const { content, rows = 3 } = props;
-  const [show, setShow] = useState(false);
+function Ellipsis(props: { content: string; name: string }) {
+  const { content } = props;
 
   return (
-    <View className='text-gray-5'>
-      <View
-        className='line-clamp-3'
-        style={{
-          display: "-webkit-box",
-          WebkitLineClamp: show ? "unset" : rows,
-          lineClamp: show ? "unset" : rows,
-          overflow: show ? "unset" : "hidden",
-        }}
-      >
-        {content}
-      </View>
-      <View className='text-sm text-gray-5' onClick={() => setShow(!show)}>
-        {show ? "收起" : "展开"}
+    <View className='ellipsis-wrapper flex p-2 of-hidden'>
+      <input id={props.name} className='exp' type='checkbox' />
+      <View className='text'>
+        <label className='btn text-sm' for={props.name}></label>
+        <View>{content}</View>
       </View>
     </View>
   );
@@ -120,7 +110,7 @@ function Intro() {
     <View className='p-3'>
       <View className='text-lg'>圈子介绍</View>
       {/* <View className='mt-1 text-gray-5'>{intro}</View> */}
-      <Ellipsis content={intro} />
+      <Ellipsis content={intro} name='intro' />
     </View>
   );
 }
@@ -159,7 +149,7 @@ function CircleItem(props: { data: any }) {
         timestamp={author.timestamp}
       />
       <View className='py-1'>
-        <Ellipsis content={content} />
+        <Ellipsis content={content} name={`circle-item-${id}`} />
       </View>
       <View className='w-full h-lg rd-lg of-hidden'>
         <Image className='w-full h-full' src={cover} mode='aspectFill' />
@@ -288,7 +278,9 @@ function JoinedHeader(props: {
           {/* 右侧操作按钮 */}
           <View className='shrink-0 flex flex-col gap-2 items-end c-gray-7'>
             <Setting size={24} />
-            <View className="text-xs px-2 py-1 bg-gray-7 c-white rd-full">分享</View>
+            <View className='text-xs px-2 py-1 bg-gray-7 c-white rd-full'>
+              分享
+            </View>
           </View>
         </View>
       </View>
@@ -324,7 +316,7 @@ function JoinedCircleItem(props: {
   } = props;
 
   return (
-    <View className='p-3 pb-0 rd rd-4 b-2 b-solid b-gray-3'>
+    <View className='flex flex-col p-3 pb-0 rd rd-4 b-2 b-solid b-gray-3'>
       <AuthorInfo
         id={author.id}
         name={author.name}
@@ -333,16 +325,15 @@ function JoinedCircleItem(props: {
       />
 
       <View className='py-1'>
-        <Ellipsis content={content} />
+        <Ellipsis content={content} name={`joined-circle-item-${id}`} />
       </View>
 
-      <View className='w-full h-md flex gap-3'>
+      <View className='grid grid-cols-3 gap-2'>
         {coverList.map((cover, index) => (
           <Image
             key={index}
-            className='grow h-full rd-lg of-hidden'
             src={cover}
-            mode='aspectFill'
+            className='w-full h-full object-cover rd-3'
           />
         ))}
       </View>
@@ -391,6 +382,9 @@ function JoinedCircleList(props: { listId: string }) {
           id: `${listId}-${num}`,
           content: "这是一段内容",
           coverList: [
+            "https://img01.yzcdn.cn/vant/cat.jpeg",
+            "https://img01.yzcdn.cn/vant/cat.jpeg",
+            "https://img01.yzcdn.cn/vant/cat.jpeg",
             "https://img01.yzcdn.cn/vant/cat.jpeg",
             "https://img01.yzcdn.cn/vant/cat.jpeg",
             "https://img01.yzcdn.cn/vant/cat.jpeg",
@@ -449,7 +443,7 @@ function JoinedCircleList(props: { listId: string }) {
 }
 
 export default function Index() {
-  const [joined, setJoined] = useState(true);
+  const [joined, setJoined] = useState(false);
 
   const tabs = [
     {

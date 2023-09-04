@@ -1,0 +1,75 @@
+.ellipsis-wrapper {
+
+  .text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: justify;
+    /* display: flex; */
+    /*   display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical; */
+    position: relative;
+    line-height: 1.5;
+    max-height: 4.5em;
+    transition: 0.3s max-height;
+
+    &::before {
+      content: "";
+      height: calc(100% - 26px);
+      float: right;
+    }
+    &::after {
+      content: "";
+      width: 999vw;
+      height: 999vw;
+      position: absolute;
+      box-shadow: inset calc(100px - 999vw) calc(30px - 999vw) 0 0 #fff;
+      margin-left: -100px;
+    }
+  }
+  .btn {
+    position: relative;
+    float: right;
+    clear: both;
+    margin-left: 20px;
+    padding: 8px 8px;
+    background: #999;
+    line-height: 24px;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    margin-top: -16px;
+
+    &::after {
+      content: "展开";
+    }
+
+    &::before {
+      content: "...";
+      position: absolute;
+      left: -5px;
+      color: #333;
+      transform: translateX(-100%);
+    }
+  }
+
+  .exp {
+    display: none;
+
+    &:checked + .text {
+      max-height: none;
+    }
+
+    &:checked + .text::after {
+      visibility: hidden;
+    }
+
+    &:checked + .text .btn::before {
+      visibility: hidden;
+    }
+
+    &:checked + .text .btn::after {
+      content: "收起";
+    }
+  }
+}
