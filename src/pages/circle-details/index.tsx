@@ -11,21 +11,7 @@ import {
   Star,
   StarOutlined,
 } from "@taroify/icons";
-import "./index.scss";
-
-function Ellipsis(props: { content: string; name: string }) {
-  const { content } = props;
-
-  return (
-    <View className='ellipsis-wrapper flex p-2 of-hidden'>
-      <input id={props.name} className='exp' type='checkbox' />
-      <View className='text'>
-        <label className='btn text-sm' for={props.name}></label>
-        <View>{content}</View>
-      </View>
-    </View>
-  );
-}
+import { Ellipsis } from "../../components/ellipsis";
 
 function Header() {
   const data = {

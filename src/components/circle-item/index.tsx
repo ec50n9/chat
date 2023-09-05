@@ -1,5 +1,5 @@
 import { View } from "@tarojs/components";
-import { Circle } from "../../api";
+import { Circle } from "../../pages/community/api";
 
 export default function CircleItem(props: { circle: Circle }) {
   return (
