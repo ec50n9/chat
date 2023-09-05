@@ -160,6 +160,7 @@ export default function Index() {
   return (
     <View className='min-h-screen'>
       <SearchBar onSearch={setKeyword} />
+      <View className="px-5 py-3 text-lg">全部圈子</View>
       <CircleList keyword={keyword} />
     </View>
   );
