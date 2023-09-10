@@ -10,6 +10,7 @@ import {
   ArrowDown,
 } from "@taroify/icons";
 import "@taroify/icons/index.scss";
+import { Flex, Input, Button } from "@taroify/core";
 import AuthInfo from "../../components/author-info";
 import {
   Post,
@@ -17,14 +18,11 @@ import {
   getPostCommentsByPostId,
   getPostsById,
 } from "../community/api";
-import "./index.scss";
-import { Field, FixedView, Flex, Input } from "@taroify/core";
-import Button from "@taroify/core/button/button";
 
 function PostContent(props: { content: string }) {
   const { content } = props;
   return (
-    <View className='post-content'>
+    <View className='mt-3 text-base'>
       <View dangerouslySetInnerHTML={{ __html: content }} />
     </View>
   );
@@ -53,15 +51,15 @@ function Actions(props: { post: Post }) {
   ];
 
   return (
-    <View className='post-actions'>
+    <View className='flex justify-around py-5'>
       {actions.map((action, index) => (
         <View
           key={index}
-          className='post-actions__item'
+          className='flex items-center gap-1 text-xl'
           onClick={action.onClick}
         >
           {action.icon}
-          <View className='post-actions__item__text'>{action.text}</View>
+          <View className='text-base'>{action.text}</View>
         </View>
       ))}
     </View>
@@ -71,13 +69,13 @@ function Actions(props: { post: Post }) {
 function Comment(props: { comment: PostComment }) {
   const { comment } = props;
   return (
-    <View className='comment-item'>
+    <View className='flex flex-col bg-white rd-3'>
       <AuthInfo
         name={comment.author.name}
         avatar={comment.author.avatar}
         timestamp={comment.createdAt}
       />
-      <View className='comment-item__content'>{comment.content}</View>
+      <View className='mt-1 ml-12 text-base'>{comment.content}</View>
     </View>
   );
 }
@@ -85,15 +83,13 @@ function Comment(props: { comment: PostComment }) {
 function CommentList(props: { comments: PostComment[] }) {
   const { comments } = props;
   return (
-    <View className='comment-list-wrapper'>
-      <View className='comment-list__header'>
-        <View className='comment-list__header__title'>评论</View>
-        <View className='comment-list__header__count'>
-          {comments.length} 条
-        </View>
+    <View className='pb-15'>
+      <View className='flex justify-between items-center mb-3'>
+        <View className='text-xl'>评论</View>
+        <View className='text-base c-gray-4'>{comments.length} 条</View>
       </View>
       <CommentInputBar onSend={() => {}} />
-      <View className='comment-list'>
+      <View className='flex flex-col gap-3'>
         {comments.map((comment) => (
           <Comment comment={comment} key={comment.id} />
         ))}
@@ -127,15 +123,9 @@ function CommentInputBar(props: { onSend: (content: string) => void }) {
 
   return (
     <Flex
+      className='fixed left-0 right-0 bottom-0 b-t-1 b-t-solid b-t-gray-3 py-2 bg-white z-10'
       align='center'
       gutter={8}
-      style={{
-        padding: "8px 0",
-        borderBottom: "1px solid #eee",
-        marginBottom: "8px",
-        backgroundColor: "#fff",
-        zIndex: 100,
-      }}
     >
       <Flex.Item span={3}>
         <Button
@@ -190,7 +180,7 @@ function Index() {
   }, [id]);
 
   return (
-    <View className='community-detail-page'>
+    <View className='h-full p-3 bg-white border-box of-auto'>
       {post && <PageContent post={post} comments={comments} />}
     </View>
   );
