@@ -10,7 +10,7 @@ import {
   ArrowDown,
 } from "@taroify/icons";
 import "@taroify/icons/index.scss";
-import { Flex, Input, Button } from "@taroify/core";
+import { Flex, Input, Button, Empty } from "@taroify/core";
 import AuthInfo from "../../components/author-info";
 import {
   Post,
@@ -89,11 +89,18 @@ function CommentList(props: { comments: PostComment[] }) {
         <View className='text-base c-gray-4'>{comments.length} 条</View>
       </View>
       <CommentInputBar onSend={() => {}} />
-      <View className='flex flex-col gap-3'>
-        {comments.map((comment) => (
-          <Comment comment={comment} key={comment.id} />
-        ))}
-      </View>
+      {comments?.length ? (
+        <View className='flex flex-col gap-3'>
+          {comments.map((comment) => (
+            <Comment comment={comment} key={comment.id} />
+          ))}
+        </View>
+      ) : (
+        <Empty>
+          <Empty.Image />
+          <Empty.Description>暂无评论</Empty.Description>
+        </Empty>
+      )}
     </View>
   );
 }
