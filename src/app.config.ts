@@ -25,7 +25,8 @@ export default defineAppConfig({
     "pages/msg-list/comment/index",
     "pages/msg-list/follow/index",
     "pages/search/index",
-    "pages/all-circles/index"
+    "pages/all-circles/index",
+    "pages/all-topic/index",
   ],
   window: {
     backgroundTextStyle: "light",
