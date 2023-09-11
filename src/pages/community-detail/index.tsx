@@ -88,7 +88,6 @@ function CommentList(props: { comments: PostComment[] }) {
         <View className='text-xl'>评论</View>
         <View className='text-base c-gray-4'>{comments.length} 条</View>
       </View>
-      <CommentInputBar onSend={() => {}} />
       {comments?.length ? (
         <View className='flex flex-col gap-3'>
           {comments.map((comment) => (
@@ -101,6 +100,7 @@ function CommentList(props: { comments: PostComment[] }) {
           <Empty.Description>暂无评论</Empty.Description>
         </Empty>
       )}
+      <CommentInputBar onSend={() => {}} />
     </View>
   );
 }
@@ -109,7 +109,7 @@ function PageContent(props: { post: Post; comments: PostComment[] }) {
   const { post, comments } = props;
 
   return (
-    <View>
+    <View className='pt-3'>
       <View className='auth-info'>
         <AuthInfo
           name={post.author.name}
@@ -187,7 +187,7 @@ function Index() {
   }, [id]);
 
   return (
-    <View className='h-full p-3 bg-white border-box of-auto'>
+    <View className='h-full px-3 bg-white border-box of-auto'>
       {post && <PageContent post={post} comments={comments} />}
     </View>
   );
