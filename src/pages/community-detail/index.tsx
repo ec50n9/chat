@@ -1,6 +1,6 @@
-import { View } from "@tarojs/components";
+import { View, Image, Text } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   CommentOutlined,
   GoodJobOutlined,
@@ -66,32 +66,87 @@ function Actions(props: { post: Post }) {
   );
 }
 
-function Comment(props: { comment: PostComment }) {
-  const { comment } = props;
+function Comment(props: {
+  comment: PostComment;
+  childrenList?: PostComment[];
+}) {
+  const { comment, childrenList } = props;
   return (
-    <View className='flex flex-col bg-white rd-3'>
-      <AuthInfo
-        name={comment.author.name}
-        avatar={comment.author.avatar}
-        timestamp={comment.createdAt}
+    <View className='flex gap-2'>
+      {/* 评论者头像 */}
+      <Image
+        className='w-56 h-56 b-2 b-solid b-gray-3 rd-full of-hidden'
+        src={comment.sendUser.avatar}
       />
-      <View className='mt-1 ml-12 text-base'>{comment.content}</View>
+      <View className='grow pb-3 b-b-2 b-b-solid b-b-gray-3'>
+        {/* 评论者昵称 */}
+        <View className='c-gray-4'>{comment.sendUser.name}</View>
+        {/* 评论内容 */}
+        <View className='mt-1'>
+          {comment.content} <Text className='inline-block c-gray-4'>回复</Text>
+        </View>
+        {/* 子评论 */}
+        <View className='mt-2 flex flex-col gap-2'>
+          {childrenList?.map((children) => (
+            <View key={children.id} className='flex gap-2'>
+              {/* 评论者头像 */}
+              <Image
+                className='w-56 h-56 b-2 b-solid b-gray-3 rd-full of-hidden'
+                src={children.sendUser.avatar}
+              />
+              <View>
+                <View>
+                  <Text className='c-gray-4'>{children.sendUser.name}</Text>{" "}
+                  回复{" "}
+                  <Text className='c-gray-4'>{children.replyUser?.name}</Text>
+                </View>
+                <View className='mt-1'>
+                  {children.content} <Text className='inline-block c-gray-4'>回复</Text>
+                </View>
+              </View>
+            </View>
+          ))}
+          <View className='text-sm c-gray-4'>展开更多</View>
+        </View>
+      </View>
     </View>
   );
 }
 
 function CommentList(props: { comments: PostComment[] }) {
   const { comments } = props;
+
+  const rootList = useMemo(
+    () => comments.filter((i) => i.rootCommentId === null),
+    [comments]
+  );
+
+  const childrenMap = useMemo(
+    () =>
+      comments.reduce((prev, cur) => {
+        if (!prev?.has(cur.rootCommentId)) {
+          prev.set(cur.rootCommentId, []);
+        }
+        prev.get(cur.rootCommentId)?.push(cur);
+        return prev;
+      }, new Map<string, PostComment[]>()),
+    [comments]
+  );
+
   return (
     <View className='pb-15'>
       <View className='flex justify-between items-center mb-3'>
         <View className='text-xl'>评论</View>
         <View className='text-base c-gray-4'>{comments.length} 条</View>
       </View>
-      {comments?.length ? (
+      {rootList?.length ? (
         <View className='flex flex-col gap-3'>
-          {comments.map((comment) => (
-            <Comment comment={comment} key={comment.id} />
+          {rootList.map((comment) => (
+            <Comment
+              key={comment.id}
+              comment={comment}
+              childrenList={childrenMap.get(comment.id)}
+            />
           ))}
         </View>
       ) : (

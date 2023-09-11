@@ -17,8 +17,10 @@ export type Post = {
 
 export type PostComment = {
   id: string;
+  rootCommentId: string;
   content: string;
-  author: Author;
+  sendUser: Author;
+  replyUser: Author | null;
   createdAt: number;
 };
 
@@ -33,7 +35,7 @@ export type Article = {
   cover: string;
   likeCount: number;
   author: Author;
-}
+};
 
 const circles: Circle[] = [
   {
@@ -106,35 +108,59 @@ const posts: Post[] = [
     },
   },
 ];
-const PostComments = {
+const postComments = {
   "1": [
     {
       id: "1",
-      content: "评论内容",
-      author: {
-        name: "作者",
+      rootCommentId: null,
+      content: "我觉得你说的对",
+      sendUser: {
+        name: "梁从心",
         avatar: "https://avatars.githubusercontent.com/u/20592923?v=4",
-        circles: [],
       },
+      replyUser: null,
       createdAt: 1620000000000,
     },
     {
       id: "2",
-      content: "评论内容",
-      author: {
-        name: "作哈哈哈者",
+      rootCommentId: "1",
+      replyUserId: "",
+      content: "附议！",
+      sendUser: {
+        name: "松叶",
         avatar: "https://avatars.githubusercontent.com/u/20592923?v=4",
-        circles: [],
+      },
+      replyUser: {
+        name: "梁从心",
+        avatar: "https://avatars.githubusercontent.com/u/20592923?v=4",
       },
       createdAt: 1620000000000,
     },
     {
       id: "3",
+      rootCommentId: "1",
+      content: "不敢苟同，我倒觉得这样有失偏颇",
+      sendUser: {
+        name: "琼鱼",
+        avatar: "https://avatars.githubusercontent.com/u/20592923?v=4",
+      },
+      replyUser: {
+        name: "松叶",
+        avatar: "https://avatars.githubusercontent.com/u/20592923?v=4",
+      },
+      createdAt: 1620000000000,
+    },
+    {
+      id: "4",
+      rootCommentId: "1",
       content: "评论内容",
-      author: {
+      sendUser: {
         name: "梁从心",
         avatar: "https://avatars.githubusercontent.com/u/20592923?v=4",
-        circles: [],
+      },
+      replyUser: {
+        name: "梁从心",
+        avatar: "https://avatars.githubusercontent.com/u/20592923?v=4",
       },
       createdAt: 1620000000000,
     },
@@ -152,6 +178,6 @@ export const getPostsByTitle = async (title: string) =>
   posts.filter((post) => post.title.includes(title));
 
 export const getPostCommentsByPostId = async (postId: string) =>
-  PostComments[postId] || [];
+  postComments[postId] || [];
 
 export const getCircles = async () => circles;
