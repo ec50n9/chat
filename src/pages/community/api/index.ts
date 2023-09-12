@@ -18,10 +18,14 @@ export type Post = {
 export type PostComment = {
   id: string;
   rootCommentId: string;
+  commentCount: number;
+  liked: boolean;
+  likeCount: number;
   content: string;
   sendUser: Author;
   replyUser: Author | null;
   createdAt: number;
+  ipLocation: string;
 };
 
 export type Circle = {
@@ -120,6 +124,10 @@ const postComments = {
       },
       replyUser: null,
       createdAt: 1620000000000,
+      ipLocation: "广东",
+      likeCount: 123,
+      liked: false,
+      commentCount: 456,
     },
     {
       id: "2",
@@ -135,10 +143,14 @@ const postComments = {
         avatar: "https://avatars.githubusercontent.com/u/20592923?v=4",
       },
       createdAt: 1620000000000,
+      ipLocation: "广西",
+      likeCount: 123,
+      liked: false,
+      commentCount: 456,
     },
     {
       id: "3",
-      rootCommentId: "1",
+      rootCommentId: null,
       content: "不敢苟同，我倒觉得这样有失偏颇",
       sendUser: {
         name: "琼鱼",
@@ -149,10 +161,14 @@ const postComments = {
         avatar: "https://avatars.githubusercontent.com/u/20592923?v=4",
       },
       createdAt: 1620000000000,
+      ipLocation: "海南",
+      likeCount: 123,
+      liked: true,
+      commentCount: 456,
     },
     {
       id: "4",
-      rootCommentId: "1",
+      rootCommentId: null,
       content: "评论内容",
       sendUser: {
         name: "梁从心",
@@ -163,6 +179,10 @@ const postComments = {
         avatar: "https://avatars.githubusercontent.com/u/20592923?v=4",
       },
       createdAt: 1620000000000,
+      ipLocation: "重庆",
+      likeCount: 123,
+      liked: false,
+      commentCount: 456,
     },
   ],
 };
