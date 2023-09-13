@@ -22,6 +22,7 @@ import {
   getPostCommentsByPostId,
   getPostsById,
 } from "../community/api";
+import EcEllipsis from "../../components/ec-ellipsis";
 
 function PostContent(props: { content: string }) {
   const { content } = props;
@@ -70,6 +71,77 @@ function Actions(props: { post: Post }) {
   );
 }
 
+function ChildrenComment(props: {
+  comment: PostComment;
+  onReply: (
+    id: PostComment["id"],
+    nickname: PostComment["sendUser"]["name"]
+  ) => void;
+}) {
+  return (
+    <View className='flex gap-2'>
+      {/* 子评论评论者头像 */}
+      <Image
+        className='shrink-0 w-40 h-40 b-2 b-solid b-gray-3 rd-full of-hidden'
+        src={props.comment.sendUser.avatar}
+      />
+      <View className='grow'>
+        {/* 子评论用户名 */}
+        <View className='text-sm c-gray-4'>
+          {/* 发送者昵称 */}
+          <EcEllipsis content={props.comment.sendUser.name} visibleCount={3} />
+          {/* 二级评论可能不需要展示被回复者昵称，三级评论才需要，所以控制一下，二级评论设置replyUser为null即可 */}
+          {props.comment.replyUser ? (
+            <>
+              <Text className='inline-block mx-1 c-gray-7'>回复</Text>
+              {/* 被回复者昵称 */}
+              <EcEllipsis
+                content={props.comment.replyUser?.name || ""}
+                visibleCount={3}
+              />
+            </>
+          ) : (
+            ""
+          )}
+        </View>
+        {/* 子评论内容 */}
+        <View
+          className='mt-1'
+          onClick={() =>
+            props.onReply(props.comment.id, props.comment.sendUser.name)
+          }
+        >
+          <EcEllipsis
+            content={props.comment.content}
+            visibleCount={30}
+            unfoldable
+          />
+        </View>
+        {/* 日期和地区 */}
+        <View className='my-1 flex gap-3 text-sm c-gray-4'>
+          <Text>{dayjs(props.comment.createdAt).format("MM-DD")}</Text>
+          <Text>{props.comment.ipLocation}</Text>
+          {/* 点赞 */}
+          <View className='grow flex justify-end gap-4'>
+            <Text className='flex gap-1 items-center'>
+              <ChatOutlined size={18} />
+              {props.comment.commentCount}
+            </Text>
+            <Text className='flex gap-1 items-center'>
+              {props.comment.liked ? (
+                <Like size={18} />
+              ) : (
+                <LikeOutlined size={18} />
+              )}
+              {props.comment.likeCount}
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
 function Comment(props: {
   comment: PostComment;
   childrenList?: PostComment[];
@@ -93,18 +165,20 @@ function Comment(props: {
     <View className='flex gap-2'>
       {/* 评论者头像 */}
       <Image
-        className='w-56 h-56 b-2 b-solid b-gray-3 rd-full of-hidden'
+        className='shrink-0 w-56 h-56 b-2 b-solid b-gray-3 rd-full of-hidden'
         src={comment.sendUser.avatar}
       />
       <View className='grow pb-3 b-b-2 b-b-solid b-b-gray-3'>
         {/* 评论者昵称 */}
-        <View className='c-gray-4 text-sm'>{comment.sendUser.name}</View>
+        <View className='c-gray-4 text-sm'>
+          <EcEllipsis content={comment.sendUser.name} visibleCount={3} />
+        </View>
         {/* 评论内容 */}
         <View
           className='mt-1'
           onClick={() => onReply(comment.id, comment.sendUser.name)}
         >
-          {comment.content}
+          <EcEllipsis content={comment.content} visibleCount={30} unfoldable />
         </View>
         {/* 日期和地区 */}
         <View className='my-1 flex gap-3 text-sm c-gray-4'>
@@ -129,48 +203,11 @@ function Comment(props: {
           <View className='mt-2 flex flex-col gap-2'>
             {childrenList?.map((children) => (
               // 子评论
-              <View key={children.id} className='flex gap-2'>
-                {/* 子评论评论者头像 */}
-                <Image
-                  className='w-40 h-40 b-2 b-solid b-gray-3 rd-full of-hidden'
-                  src={children.sendUser.avatar}
-                />
-                <View className='grow'>
-                  {/* 子评论用户名 */}
-                  <View className='text-sm'>
-                    <Text className='c-gray-4'>{children.sendUser.name}</Text>{" "}
-                    回复{" "}
-                    <Text className='c-gray-4'>{children.replyUser?.name}</Text>
-                  </View>
-                  {/* 子评论内容 */}
-                  <View
-                    className='mt-1'
-                    onClick={() => onReply(children.id, children.sendUser.name)}
-                  >
-                    {children.content}
-                  </View>
-                  {/* 日期和地区 */}
-                  <View className='my-1 flex gap-3 text-sm c-gray-4'>
-                    <Text>{dayjs(children.createdAt).format("MM-DD")}</Text>
-                    <Text>{children.ipLocation}</Text>
-                    {/* 点赞 */}
-                    <View className='grow flex justify-end gap-4'>
-                      <Text className='flex gap-1 items-center'>
-                        <ChatOutlined size={18} />
-                        {children.commentCount}
-                      </Text>
-                      <Text className='flex gap-1 items-center'>
-                        {children.liked ? (
-                          <Like size={18} />
-                        ) : (
-                          <LikeOutlined size={18} />
-                        )}
-                        {children.likeCount}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
+              <ChildrenComment
+                key={children.id}
+                comment={children}
+                onReply={onReply}
+              />
             ))}
           </View>
         )}
