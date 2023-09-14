@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Text } from "@tarojs/components";
+import { ITouchEvent, Text } from "@tarojs/components";
 
 export default function EcEllipsis(props: {
   content: string;
@@ -24,7 +24,9 @@ export default function EcEllipsis(props: {
     [props.unfoldable, props.visibleCount, props.content]
   );
 
-  const handleToggleFold = () => {
+  const handleToggleFold = (e: ITouchEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     setFolded(!folded);
   };
 

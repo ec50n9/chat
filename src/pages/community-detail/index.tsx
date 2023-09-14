@@ -1,4 +1,4 @@
-import { View, Image, Text } from "@tarojs/components";
+import { View, Image, Text, Textarea } from "@tarojs/components";
 import Taro from "@tarojs/taro";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -11,9 +11,14 @@ import {
   ChatOutlined,
   LikeOutlined,
   Like,
+  Smile,
+  Photo,
+  Location,
+  SmileOutlined,
+  Checked,
 } from "@taroify/icons";
 import "@taroify/icons/index.scss";
-import { Flex, Input, Button, Empty } from "@taroify/core";
+import { Flex, Input, Button, Empty, Popup, Avatar } from "@taroify/core";
 import dayjs from "dayjs";
 import AuthInfo from "../../components/author-info";
 import {
@@ -259,6 +264,7 @@ function CommentList(props: { comments: PostComment[] }) {
 
   const [replyingId, setReplyingId] = useState("");
   const [placeHolder, setPlaceHolder] = useState("");
+  const [popupOpen, setPopupOpen] = useState(false);
 
   const handleReply = (
     id: PostComment["id"],
@@ -266,10 +272,16 @@ function CommentList(props: { comments: PostComment[] }) {
   ) => {
     setReplyingId(id);
     setPlaceHolder(`回复 ${nickname}`);
+    setPopupOpen(true);
   };
 
   const handleLoadMore = (id: PostComment["id"]) => {
     console.log("loading: ", id);
+  };
+
+  const handleSendComment = (comment: string) => {
+    console.log("正在发送 ", comment, " 到 ", replyingId);
+    setPopupOpen(false);
   };
 
   return (
@@ -300,7 +312,15 @@ function CommentList(props: { comments: PostComment[] }) {
       <CommentInputBar
         replyingId={replyingId}
         placeHolder={placeHolder}
+        onClick={() => setPopupOpen(true)}
         onSend={() => {}}
+      />
+      <RealCommentInputBar
+        open={popupOpen}
+        replyingId={replyingId}
+        placeHolder={placeHolder}
+        onSend={handleSendComment}
+        onClose={() => setPopupOpen(false)}
       />
     </View>
   );
@@ -326,10 +346,128 @@ function PageContent(props: { post: Post; comments: PostComment[] }) {
   );
 }
 
+function RealCommentInputBar(props: {
+  open: boolean;
+  replyingId: string;
+  placeHolder: string;
+  onSend: (content: string) => void;
+  onClose: () => void;
+}) {
+  const [maskList, setMaskList] = useState([
+    {
+      id: "1",
+      avatar: "https://avatars.githubusercontent.com/u/20592923?v=4",
+      nickname: "陈家坤",
+    },
+    {
+      id: "2",
+      avatar: "https://avatars.githubusercontent.com/u/20592923?v=4",
+      nickname: "在厦门钓鱼的菠菜",
+    },
+    {
+      id: "3",
+      avatar: "https://avatars.githubusercontent.com/u/20592923?v=4",
+      nickname: "在厦门钓鱼的菠菜·清华大学学生 在厦门钓鱼的菠菜·清华大学学生",
+    },
+  ]);
+
+  const [currentMaskIndex, setCurrentMaskIndex] = useState(0);
+  const [maskListVisible, setMaskListVisible] = useState(false);
+
+  const currentMask = useMemo(
+    () => maskList[currentMaskIndex],
+    [maskList, currentMaskIndex]
+  );
+
+  const [comment, setComment] = useState("");
+
+  return (
+    <Popup open={props.open} onClose={props.onClose} placement='bottom' rounded>
+      <View className='px-4 py-3'>
+        {/* 身份选择 */}
+        {maskListVisible ? (
+          <View className='mb-5 flex flex-col gap-3'>
+            {maskList.map((mask, index) => (
+              <View
+                key={mask.id}
+                className='flex items-center gap-2'
+                onClick={() => {
+                  setCurrentMaskIndex(index);
+                  setMaskListVisible(false);
+                }}
+              >
+                <Avatar className='shrink-0' src={mask.avatar} />
+                <Text className='grow w-0 truncate'>{mask.nickname}</Text>
+                {currentMaskIndex === index ? (
+                  <Checked className='shrink-0' size={20} />
+                ) : (
+                  ""
+                )}
+              </View>
+            ))}
+          </View>
+        ) : (
+          ""
+        )}
+        {/* 当前身份 */}
+        <View
+          className='flex items-center gap-2'
+          onClick={() => setMaskListVisible(true)}
+        >
+          <Avatar className='shrink-0' src={currentMask.avatar} size='small' />
+          <Text className='grow w-0 text-sm truncate'>
+            {currentMask.nickname}
+          </Text>
+        </View>
+
+        {/* 信息输入框 */}
+        <View className='mt-3 flex items-center gap-2'>
+          <Textarea
+            className='grow w-0 px-3 py-2 min-h-80 bg-gray-1 rd-3 of-hidden'
+            placeholder={props.placeHolder}
+            value={comment}
+            onInput={(e) => setComment(e.detail.value)}
+            autoFocus
+            autoHeight
+          />
+          <View
+            className='shrink-0 px-3 text-sm'
+            onClick={() => {
+              props.onSend(comment);
+              setComment("");
+            }}
+          >
+            {comment ? (
+              <Text className='c-blue-5'>发送</Text>
+            ) : (
+              <Text className='c-blue-3'>发送</Text>
+            )}
+          </View>
+        </View>
+
+        {/* 底部表情栏 */}
+        <View className='mt-4 flex items-center gap-5'>
+          {/* 左侧 */}
+          <View className='grow w-0 flex items-center gap-3'>
+            <SmileOutlined size={20} />
+            <SmileOutlined size={20} />
+            <SmileOutlined size={20} />
+          </View>
+          {/* 右侧 */}
+          <Location className='shrink-0' size={20} />
+          <Photo className='shrink-0' size={20} />
+          <Smile className='shrink-0' size={20} />
+        </View>
+      </View>
+    </Popup>
+  );
+}
+
 function CommentInputBar(props: {
   replyingId: string;
   placeHolder: string;
   onSend: (content: string) => void;
+  onClick: () => void;
 }) {
   const [value, setValue] = useState("");
 
@@ -338,6 +476,11 @@ function CommentInputBar(props: {
       className='fixed left-0 right-0 bottom-0 b-t-1 b-t-solid b-t-gray-3 py-2 bg-white z-10'
       align='center'
       gutter={8}
+      onClick={(e) => {
+        props.onClick();
+        e.preventDefault();
+        e.stopPropagation();
+      }}
     >
       <Flex.Item span={3}>
         <Button
@@ -359,13 +502,7 @@ function CommentInputBar(props: {
         />
       </Flex.Item>
       <Flex.Item span={4}>
-        <Button
-          color='primary'
-          shape='round'
-          size='small'
-          block
-          onClick={() => props.onSend(value)}
-        >
+        <Button color='primary' shape='round' size='small' block>
           <Share size={16} />
         </Button>
       </Flex.Item>
