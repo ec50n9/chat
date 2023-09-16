@@ -27,6 +27,7 @@ export default defineAppConfig({
     "pages/search/index",
     "pages/all-circles/index",
     "pages/all-topic/index",
+    "pages/leader-board/index",
   ],
   window: {
     backgroundTextStyle: "light",
