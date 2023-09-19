@@ -28,6 +28,7 @@ export default defineAppConfig({
     "pages/all-circles/index",
     "pages/all-topic/index",
     "pages/leader-board/index",
+    "pages/new-chat/index",
   ],
   window: {
     backgroundTextStyle: "light",
