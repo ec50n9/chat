@@ -6,7 +6,7 @@ import {
   Star,
   StarOutlined,
 } from "@taroify/icons";
-import { Image } from "@taroify/core";
+import { Image, Tabs } from "@taroify/core";
 import { View } from "@tarojs/components";
 import { getCurrentInstance } from "@tarojs/runtime";
 import { usePageScroll } from "@tarojs/taro";
@@ -61,11 +61,82 @@ function ArticleItem(props: { article: Article }) {
   );
 }
 
+function TextArticleItem(props: { article: Article }) {
+  return (
+    <View className='flex flex-col gap-2 h-500 c-gray-7 bg-white'>
+      <View className='shrink-0 of-hidden truncate'>{props.article.title}</View>
+      <View className='shrink-0 flex items-center gap-1 c-gray-5'>
+        <View className='shrink-0 w-40 h-40 bg-gray-5 rd-full of-hidden'>
+          <Image
+            className='w-full h-full'
+            mode='aspectFill'
+            src={props.article.author.avatar}
+          />
+        </View>
+        <View className='grow'>{props.article.author.nickname}</View>
+        <View className='shrink-0'>
+          <LikeOutlined style={{ marginRight: "4px" }} />
+          {props.article.likeCount}
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function PickArticleItem(props: { article: Article }) {
+  return (
+    <View className='flex flex-col gap-2 h-500 c-gray-7 bg-white'>
+      <View className='grow object-cover rd-3 of-hidden bg-blue-3'>
+        <Image
+          className='w-full h-full'
+          mode='aspectFill'
+          src={props.article.author.avatar}
+        />
+      </View>
+      <View className='shrink-0 of-hidden truncate'>{props.article.title}</View>
+      <View className='shrink-0 flex items-center gap-1 c-gray-5'>
+        <View className='shrink-0 w-40 h-40 bg-gray-5 rd-full of-hidden'>
+          <Image
+            className='w-full h-full'
+            mode='aspectFill'
+            src={props.article.author.avatar}
+          />
+        </View>
+        <View className='grow'>{props.article.author.nickname}</View>
+        <View className='shrink-0'>
+          <LikeOutlined style={{ marginRight: "4px" }} />
+          {props.article.likeCount}
+        </View>
+      </View>
+    </View>
+  );
+}
+
 function ArticleList(props: { articles: Article[] }) {
   return (
-    <View className='grid grid-cols-2 gap-5 px-5 pb-5 bg-white'>
+    <View className='grid grid-cols-2 gap-5 px-5 py-5 bg-white'>
       {props.articles.map((article) => (
         <ArticleItem article={article} key={article.id} />
+      ))}
+    </View>
+  );
+}
+
+function TextArticleList(props: { articles: Article[] }) {
+  return (
+    <View className='flex flex-col gap-5 px-5 py-5 bg-white'>
+      {props.articles.map((article) => (
+        <TextArticleItem article={article} key={article.id} />
+      ))}
+    </View>
+  );
+}
+
+function PickArticleList(props: { articles: Article[] }) {
+  return (
+    <View className='grid grid-cols-2 gap-5 px-5 py-5 bg-white'>
+      {props.articles.map((article) => (
+        <PickArticleItem article={article} key={article.id} />
       ))}
     </View>
   );
@@ -83,100 +154,99 @@ export default function Index() {
       username: "abc",
       nickname: "陈霸先",
       signture: "每个人都有快乐的时候，你呢？",
-      avatar: "https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80",
+      avatar:
+        "https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80",
       following: 97,
       followers: 634,
       isFollowed: false,
     });
-    setarticleList([
-      {
-        id: "1",
-        title: "文章1",
-        cover: "https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80",
-        likeCount: 100,
-        author: {
-          id: "abc",
-          nickname: "作者1",
-          avatar: "https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80",
-        },
-      },
-      {
-        id: "2",
-        title: "文章文章文章文章文章文章文章,文章文章文章文章",
-        cover: "",
-        likeCount: 100,
-        author: {
-          nickname: "作者1",
-          avatar: "",
-        },
-      },
-      {
-        id: "3",
-        title: "文章文章文章文章文章文章文章,文章文章文章文章",
-        cover: "",
-        likeCount: 100,
-        author: {
-          nickname: "作者1",
-          avatar: "",
-        },
-      },
-      {
-        id: "4",
-        title: "文章文章文章文章文章文章文章,文章文章文章文章",
-        cover: "",
-        likeCount: 100,
-        author: {
-          nickname: "作者1",
-          avatar: "",
-        },
-      },
-      {
-        id: "5",
-        title: "文章文章文章文章文章文章文章,文章文章文章文章",
-        cover: "",
-        likeCount: 100,
-        author: {
-          nickname: "作者1",
-          avatar: "",
-        },
-      },
-      {
-        id: "6",
-        title: "文章文章文章文章文章文章文章,文章文章文章文章",
-        cover: "",
-        likeCount: 100,
-        author: {
-          nickname: "作者1",
-          avatar: "",
-        },
-      },
-    ]);
   }, []);
 
-  const [articleList, setarticleList] = useState<Article[]>([]);
-  // const pageSize = 20;
-  // const [hasMore, setHasMore] = useState(true);
-  // const [loading, setLoading] = useState(false);
-  // const refreshingRef = useRef(false);
-  // const [scrollTop, setScrollTop] = useState(0);
-  // const [reachTop, setReachTop] = useState(true);
-  // const [pageNo, setPageNo] = useState<number>(1);
+  // 文章列表相关
+  const tempArticleList = [
+    {
+      id: "1",
+      title: "文章1",
+      cover:
+        "https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80",
+      likeCount: 100,
+      author: {
+        id: "abc",
+        nickname: "作者1",
+        avatar:
+          "https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80",
+      },
+    },
+    {
+      id: "2",
+      title: "文章文章文章文章文章文章文章,文章文章文章文章",
+      cover: "",
+      likeCount: 100,
+      author: {
+        nickname: "作者1",
+        avatar: "",
+      },
+    },
+    {
+      id: "3",
+      title: "文章文章文章文章文章文章文章,文章文章文章文章",
+      cover: "",
+      likeCount: 100,
+      author: {
+        nickname: "作者1",
+        avatar: "",
+      },
+    },
+    {
+      id: "4",
+      title: "文章文章文章文章文章文章文章,文章文章文章文章",
+      cover: "",
+      likeCount: 100,
+      author: {
+        nickname: "作者1",
+        avatar: "",
+      },
+    },
+    {
+      id: "5",
+      title: "文章文章文章文章文章文章文章,文章文章文章文章",
+      cover: "",
+      likeCount: 100,
+      author: {
+        nickname: "作者1",
+        avatar: "",
+      },
+    },
+    {
+      id: "6",
+      title: "文章文章文章文章文章文章文章,文章文章文章文章",
+      cover: "",
+      likeCount: 100,
+      author: {
+        nickname: "作者1",
+        avatar: "",
+      },
+    },
+  ];
 
-  // usePageScroll(({ scrollTop: aScrollTop }) => {
-  //   setScrollTop(aScrollTop);
-  //   setReachTop(aScrollTop === 0);
-  // });
+  const [articleList, setArticleList] = useState<Article[]>([]);
+  const [textArticleList, setTextArticleList] = useState<Article[]>([]);
+  const [pickArticleList, setPickArticleList] = useState<Article[]>([]);
 
-  // function onLoad() {
-  //   console.log(`推荐内容-on load, pageNo:${pageNo}`);
-  // }
-
-  // function onRefresh() {
-  //   console.log("推荐内容-on refresh");
-  //   refreshingRef.current = true;
-  //   setLoading(false);
-  //   onLoad();
-  // }
+  type Tab = "article" | "text" | "pick";
+  const [currentTab, setCurrentTab] = useState<Tab>("article");
+  useEffect(() => {
+    ({
+      // 加载图文列表
+      article: () => !articleList.length && setArticleList(tempArticleList),
+      // 加载文本列表
+      text: () =>
+        !textArticleList.length && setTextArticleList(tempArticleList),
+      // 加载pick列表
+      pick: () =>
+        !pickArticleList.length && setPickArticleList(tempArticleList),
+    })[currentTab]();
+  }, [currentTab]);
 
   return (
     <View className='min-h-screen c-white text-base bg-gray-7'>
@@ -186,11 +256,11 @@ export default function Index() {
 
       <View className='flex items-center gap-3 p-3'>
         <View className='w-96 h-96 rd-full of-hidden bg-blue-200'>
-        <Image
-          className='w-full h-full'
-          mode='aspectFill'
-          src={userDetails?.avatar}
-        />
+          <Image
+            className='w-full h-full'
+            mode='aspectFill'
+            src={userDetails?.avatar}
+          />
         </View>
         <View className='grow'>
           <View className='text-base'>{userDetails?.nickname}FV</View>
@@ -221,7 +291,17 @@ export default function Index() {
         </View>
       </View>
 
-      <ArticleList articles={articleList} />
+      <Tabs value={currentTab} onChange={setCurrentTab}>
+        <Tabs.TabPane value='article' title='图文'>
+          <ArticleList articles={articleList} />
+        </Tabs.TabPane>
+        <Tabs.TabPane value='text' title='文本'>
+          <TextArticleList articles={textArticleList} />
+        </Tabs.TabPane>
+        <Tabs.TabPane value='pick' title='Pick'>
+          <PickArticleList articles={pickArticleList} />
+        </Tabs.TabPane>
+      </Tabs>
     </View>
   );
 }
