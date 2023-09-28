@@ -1,8 +1,11 @@
-import { Button, List, Loading, PullRefresh, Tabs } from "@taroify/core";
+import { List, Loading, PullRefresh, Tabs } from "@taroify/core";
 import { View, Image } from "@tarojs/components";
 import { usePageScroll } from "@tarojs/taro";
 import dayjs from "dayjs";
 import { useRef, useState } from "react";
+import classNames from "classnames";
+
+type WorksItemStatus = "pass" | "underReview" | "notPass";
 
 type WorksItem = {
   id: string;
@@ -13,6 +16,7 @@ type WorksItem = {
   like: number;
   comment: number;
   collect: number;
+  status: WorksItemStatus;
 };
 
 function WorksItemView(props: { item: WorksItem }) {
@@ -37,6 +41,12 @@ function WorksItemView(props: { item: WorksItem }) {
     },
   ];
 
+  const statusMap = useRef({
+    pass: "已通过",
+    underReview: "审核中",
+    notPass: "未通过",
+  });
+
   return (
     <View className='m-3 p-3 bg-white rd-3'>
       <View className='flex items-center gap-3'>
@@ -48,10 +58,23 @@ function WorksItemView(props: { item: WorksItem }) {
         ) : (
           ""
         )}
+
         <View className='grow w-0 flex flex-col gap-1'>
           <View className='text-base truncate'>{item.title}</View>
           <View className='text-sm c-gray-4'>
             发布时间: {dayjs(item.publicTime).format("YYYY-MM-DD")}
+          </View>
+        </View>
+
+        <View className='shrink-0'>
+          <View
+            className={classNames("px-2 py-0.5 c-gray-6 text-xs rd-1", {
+              "bg-green-1 c-green-7": item.status === "pass",
+              "bg-yellow-1 c-yellow-7": item.status === "underReview",
+              "bg-red-1 c-red-7": item.status === "notPass",
+            })}
+          >
+            {statusMap.current[item.status]}
           </View>
         </View>
       </View>
@@ -104,6 +127,7 @@ function MyWorks() {
           like: 100,
           comment: 100,
           collect: 100,
+          status: "pass",
         },
         {
           id: "2",
@@ -113,6 +137,7 @@ function MyWorks() {
           like: 100,
           comment: 100,
           collect: 100,
+          status: "notPass",
         }
       );
 
@@ -189,6 +214,7 @@ function UnderReview() {
           like: 100,
           comment: 100,
           collect: 100,
+          status: "underReview",
         },
         {
           id: "2",
@@ -198,6 +224,7 @@ function UnderReview() {
           like: 100,
           comment: 100,
           collect: 100,
+          status: "underReview",
         }
       );
 
@@ -274,6 +301,7 @@ function NotPass() {
           like: 100,
           comment: 100,
           collect: 100,
+          status: "notPass",
         },
         {
           id: "2",
@@ -283,6 +311,7 @@ function NotPass() {
           like: 100,
           comment: 100,
           collect: 100,
+          status: "notPass",
         }
       );
 
