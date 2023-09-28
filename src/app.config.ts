@@ -30,6 +30,7 @@ export default defineAppConfig({
     "pages/leader-board/index",
     "pages/new-chat/index",
     "pages/works-management/index",
+    "pages/report/index",
   ],
   window: {
     backgroundTextStyle: "light",

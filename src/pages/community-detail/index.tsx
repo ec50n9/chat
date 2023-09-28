@@ -16,6 +16,7 @@ import {
   Location,
   SmileOutlined,
   Checked,
+  MoreOutlined,
 } from "@taroify/icons";
 import "@taroify/icons/index.scss";
 import { Flex, Input, Button, Empty, Popup, Avatar } from "@taroify/core";
@@ -57,6 +58,22 @@ function Actions(props: { post: Post }) {
       icon: liked ? <GoodJob color='#e76038' /> : <GoodJobOutlined />,
       text: post.likeCount,
       onClick: () => setLiked(!liked),
+    },
+    {
+      icon: <MoreOutlined />,
+      text: "",
+      onClick: () => {
+        Taro.showActionSheet({
+          itemList: ["举报"],
+          success: (res) => {
+            if (res.tapIndex === 0) {
+              Taro.navigateTo({
+                url: "/pages/report/index?postId=" + post.id,
+              });
+            }
+          },
+        });
+      },
     },
   ];
 
