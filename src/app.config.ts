@@ -29,6 +29,7 @@ export default defineAppConfig({
     "pages/all-topic/index",
     "pages/leader-board/index",
     "pages/new-chat/index",
+    "pages/works-management/index",
   ],
   window: {
     backgroundTextStyle: "light",
