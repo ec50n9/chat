@@ -31,6 +31,7 @@ export default defineAppConfig({
     "pages/new-chat/index",
     "pages/works-management/index",
     "pages/report/index",
+    "pages/pick-user/index"
   ],
   window: {
     backgroundTextStyle: "light",
