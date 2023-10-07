@@ -53,7 +53,7 @@ function TopList(props: { dataList: RankingItem[] }) {
                 src={item.avatar}
                 size='large'
               />
-              <Text className='mt-2 c-gray-7 text-sm truncate'>
+              <Text className='w-full mt-2 c-gray-7 text-sm truncate'>
                 {item.name}
               </Text>
               <Text
@@ -107,7 +107,7 @@ function RankingList(props: { listId: string }) {
     {
       id: "1",
       avatar: "https://img01.yzcdn.cn/vant/cat.jpeg",
-      name: "广州大学校友圈",
+      name: "广州大学校友圈哈哈哈昂昂哈哈行",
       memberCount: 123,
       joined: true,
       sort: 1,
