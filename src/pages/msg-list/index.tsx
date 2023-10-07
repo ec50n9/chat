@@ -1,4 +1,4 @@
-import { Avatar, List, Loading, PullRefresh } from "@taroify/core";
+import { Avatar, Badge, List, Loading, PullRefresh } from "@taroify/core";
 import {
   Chat,
   ChatOutlined,
@@ -145,16 +145,19 @@ export default function Index() {
     {
       icon: <ChatOutlined size={32} />,
       text: "评论和@",
+      badge: 5,
       onClick: () => {},
     },
     {
       icon: <SmileOutlined size={32} />,
       text: "新增粉丝",
+      badge: 0,
       onClick: () => {},
     },
     {
       icon: <StarOutlined size={32} />,
       text: "收藏和点赞",
+      badge: 10,
       onClick: () => {},
     },
   ];
@@ -173,7 +176,11 @@ export default function Index() {
             className='flex flex-col items-center gap-1'
             onClick={action.onClick}
           >
-            {action.icon}
+            {action.badge ? (
+              <Badge content={action.badge}>{action.icon}</Badge>
+            ) : (
+              <>{action.icon}</>
+            )}
             <Text className='text-sm'>{action.text}</Text>
           </View>
         ))}
