@@ -341,6 +341,15 @@ function PageContent(props: { post: Post; comments: PostComment[] }) {
       </View>
       <PostContent content={post.content} />
       <Actions post={post} />
+      {/* 位置和来源 */}
+      <View className='pb-3 flex justify-between items-center text-sm c-gray-3'>
+        <View>
+          来自 <Text className='c-gray-5'>汕头大学校友圈</Text>
+        </View>
+        <View>
+          发布于 <Text className='c-gray-5'>广东</Text>
+        </View>
+      </View>
       <CommentList comments={comments} />
     </View>
   );
