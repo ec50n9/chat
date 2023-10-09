@@ -1,9 +1,21 @@
-import { List, Loading, PullRefresh, Tabs } from "@taroify/core";
-import { View, Image } from "@tarojs/components";
-import { usePageScroll } from "@tarojs/taro";
+import {
+  Button,
+  Cell,
+  Dialog,
+  List,
+  Loading,
+  PullRefresh,
+  Tabs,
+  Toast,
+  Form,
+  Input,
+} from "@taroify/core";
+import { View, Image, FormProps, BaseEventOrig } from "@tarojs/components";
+import { nextTick, usePageScroll } from "@tarojs/taro";
 import dayjs from "dayjs";
 import { useRef, useState } from "react";
 import classNames from "classnames";
+import { FormInstance } from "@taroify/core/form";
 
 type WorksItemStatus = "pass" | "underReview" | "notPass";
 
@@ -19,8 +31,12 @@ type WorksItem = {
   status: WorksItemStatus;
 };
 
-function WorksItemView(props: { item: WorksItem }) {
-  const { item } = props;
+function WorksItemView(props: {
+  item: WorksItem;
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+}) {
+  const { item, onEdit, onDelete } = props;
 
   const viewData = [
     {
@@ -88,8 +104,17 @@ function WorksItemView(props: { item: WorksItem }) {
         ))}
       </View>
 
-      <View className='mt-3 flex justify-end'>
-        <View className='px-5 py-0.5 b-1 b-solid b-gray-3 c-gray-6 text-sm rd-full'>
+      <View className='mt-3 flex justify-between'>
+        <View
+          className='px-5 py-0.5 b-1 b-solid b-gray-3 c-gray-6 text-sm rd-2'
+          onClick={() => onEdit(item.id)}
+        >
+          编辑
+        </View>
+        <View
+          className='px-5 py-0.5 b-1 b-solid b-gray-3 c-gray-6 text-sm rd-2'
+          onClick={() => onDelete(item.id)}
+        >
           删除
         </View>
       </View>
@@ -97,7 +122,10 @@ function WorksItemView(props: { item: WorksItem }) {
   );
 }
 
-function MyWorks() {
+function MyWorks(props: {
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+}) {
   const [hasMore, setHasMore] = useState(true);
   const [list, setList] = useState<WorksItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -169,7 +197,12 @@ function MyWorks() {
             onLoad={onLoad}
           >
             {list.map((item, index) => (
-              <WorksItemView key={index} item={item} />
+              <WorksItemView
+                key={index}
+                item={item}
+                onEdit={props.onEdit}
+                onDelete={props.onDelete}
+              />
             ))}
             {!refreshingRef.current && (
               <List.Placeholder>
@@ -184,7 +217,10 @@ function MyWorks() {
   );
 }
 
-function UnderReview() {
+function UnderReview(props: {
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+}) {
   const [hasMore, setHasMore] = useState(true);
   const [list, setList] = useState<WorksItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -256,7 +292,12 @@ function UnderReview() {
             onLoad={onLoad}
           >
             {list.map((item, index) => (
-              <WorksItemView key={index} item={item} />
+              <WorksItemView
+                key={index}
+                item={item}
+                onEdit={props.onEdit}
+                onDelete={props.onDelete}
+              />
             ))}
             {!refreshingRef.current && (
               <List.Placeholder>
@@ -271,7 +312,10 @@ function UnderReview() {
   );
 }
 
-function NotPass() {
+function NotPass(props: {
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+}) {
   const [hasMore, setHasMore] = useState(true);
   const [list, setList] = useState<WorksItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -343,7 +387,12 @@ function NotPass() {
             onLoad={onLoad}
           >
             {list.map((item, index) => (
-              <WorksItemView key={index} item={item} />
+              <WorksItemView
+                key={index}
+                item={item}
+                onEdit={props.onEdit}
+                onDelete={props.onDelete}
+              />
             ))}
             {!refreshingRef.current && (
               <List.Placeholder>
@@ -361,18 +410,91 @@ function NotPass() {
 function BasicTabs() {
   const [current, setCurrent] = useState(0);
 
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const dialogRef = useRef<FormInstance>(null);
+  const onEdit = (id: string) => {
+    setDialogOpen(true);
+
+    // 这里根据id获取到对应的数据，然后填充到表单中
+    nextTick(() => {
+      dialogRef.current?.setValues({
+        like: 100,
+        comment: 100,
+        collect: 100,
+      });
+    });
+  };
+
+  const onEditSubmit = (
+    event: BaseEventOrig<FormProps.onSubmitEventDetail>
+  ) => {
+    // 这里做更新提交逻辑
+    console.log(event.detail.value);
+    setDialogOpen(false);
+  };
+
+  const onDelete = (id: string) => {};
+
   return (
-    <Tabs value={current} onChange={setCurrent} sticky>
-      <Tabs.TabPane title='我的作品'>
-        <MyWorks />
-      </Tabs.TabPane>
-      <Tabs.TabPane title='审核中'>
-        <UnderReview />
-      </Tabs.TabPane>
-      <Tabs.TabPane title='未通过'>
-        <NotPass />
-      </Tabs.TabPane>
-    </Tabs>
+    <>
+      <Tabs value={current} onChange={setCurrent} sticky>
+        <Tabs.TabPane title='我的作品'>
+          <MyWorks onEdit={onEdit} onDelete={onDelete} />
+        </Tabs.TabPane>
+        <Tabs.TabPane title='审核中'>
+          <UnderReview onEdit={onEdit} onDelete={onDelete} />
+        </Tabs.TabPane>
+        <Tabs.TabPane title='未通过'>
+          <NotPass onEdit={onEdit} onDelete={onDelete} />
+        </Tabs.TabPane>
+      </Tabs>
+
+      {/* 编辑弹窗 */}
+      <Dialog open={dialogOpen} onClose={setDialogOpen}>
+        <Dialog.Content>
+          <Form ref={dialogRef} onSubmit={onEditSubmit}>
+            <Toast id='toast' />
+            <Cell.Group inset>
+              <Form.Item
+                name='like'
+                rules={[{ required: true, message: "请填写点赞数" }]}
+              >
+                <Form.Label>点赞数</Form.Label>
+                <Form.Control>
+                  <Input type='number' placeholder='请填写点赞数' />
+                </Form.Control>
+              </Form.Item>
+
+              <Form.Item
+                name='comment'
+                rules={[{ required: true, message: "请填写评论数" }]}
+              >
+                <Form.Label>评论数</Form.Label>
+                <Form.Control>
+                  <Input type='number' placeholder='请填写评论数' />
+                </Form.Control>
+              </Form.Item>
+
+              <Form.Item
+                name='collect'
+                rules={[{ required: true, message: "请填写收藏数" }]}
+              >
+                <Form.Label>收藏数</Form.Label>
+                <Form.Control>
+                  <Input type='number' placeholder='请填写收藏数' />
+                </Form.Control>
+              </Form.Item>
+            </Cell.Group>
+            <View style={{ margin: "16px" }}>
+              <Button shape='round' block color='primary' formType='submit'>
+                提交
+              </Button>
+            </View>
+          </Form>
+        </Dialog.Content>
+      </Dialog>
+    </>
   );
 }
 
