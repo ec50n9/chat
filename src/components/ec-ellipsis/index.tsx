@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { ITouchEvent, Text } from "@tarojs/components";
+import classNames from "classnames";
 
 export default function EcEllipsis(props: {
   content: string;
@@ -32,7 +33,16 @@ export default function EcEllipsis(props: {
 
   return (
     <>
-      {visibleContent}
+      {visibleContent.split("\n").map((line, i, arr) => (
+        <Text
+          key={i}
+          className={classNames({
+            block: i !== arr.length - 1,
+          })}
+        >
+          {line}
+        </Text>
+      ))}
       <Text className='inline-block ml-.5'>{ellipsisVisible ? "..." : ""}</Text>
       {unfoldVisible ? (
         <Text

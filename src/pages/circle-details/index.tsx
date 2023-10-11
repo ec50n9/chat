@@ -1,6 +1,3 @@
-import { View, Image, Text } from "@tarojs/components";
-import { Avatar, List, Loading, PullRefresh, Tabs } from "@taroify/core";
-import AuthorInfo from "../../components/author-info";
 import { useRef, useState } from "react";
 import Taro, { usePageScroll } from "@tarojs/taro";
 import {
@@ -11,7 +8,11 @@ import {
   Star,
   StarOutlined,
 } from "@taroify/icons";
+import { View, Image, Text } from "@tarojs/components";
+import { Avatar, List, Loading, PullRefresh, Tabs } from "@taroify/core";
+import AuthorInfo from "../../components/author-info";
 import { Ellipsis } from "../../components/ellipsis";
+import EcEllipsis from "../../components/ec-ellipsis";
 
 function Header() {
   const data = {
@@ -159,7 +160,16 @@ function CircleList() {
     },
     {
       id: "2",
-      content: "这是一段内容",
+      content: `广州永泰竞技足球俱乐部八项基本规定
+      一、遵守体育道德，尊重球队，尊重队友，尊重对手；
+      二、坚持以球会友，团结友爱，一日队友，友情长存；
+      三、实行民主集中，队长负责，集体管理，履职尽责；
+      四、服从球队管理，遵守规定，队长带头，队员遵从；
+      五、按时缴纳队费，收支透明，无故拖欠，视同退队；
+      六、严肃报名纪律，如有空降，严禁上场，共同监督；
+      七、比赛教练排阵，主力优先，普通约战，均衡出场；
+      八、倡导群策群力，能者多劳，全员参与，造福球队。
+      （违反队规，一次提醒，二次警告，三次清退）`,
       cover: "https://img01.yzcdn.cn/vant/cat.jpeg",
       author: {
         id: "1",
@@ -334,7 +344,8 @@ function JoinedCircleItem(props: {
       />
 
       <View className='py-1'>
-        <Ellipsis content={content} name={`joined-circle-item-${id}`} />
+        {/* <Ellipsis content={content} name={`joined-circle-item-${id}`} /> */}
+        <EcEllipsis content={content} visibleCount={50} unfoldable />
       </View>
 
       <View className='grid grid-cols-3 gap-2'>
@@ -394,7 +405,16 @@ function JoinedCircleList(props: { listId: string }) {
         const num = newList.length + 1;
         newList.push({
           id: `${listId}-${num}`,
-          content: "这是一段内容",
+          content: `广州永泰竞技足球俱乐部八项基本规定
+          一、遵守体育道德，尊重球队，尊重队友，尊重对手；
+          二、坚持以球会友，团结友爱，一日队友，友情长存；
+          三、实行民主集中，队长负责，集体管理，履职尽责；
+          四、服从球队管理，遵守规定，队长带头，队员遵从；
+          五、按时缴纳队费，收支透明，无故拖欠，视同退队；
+          六、严肃报名纪律，如有空降，严禁上场，共同监督；
+          七、比赛教练排阵，主力优先，普通约战，均衡出场；
+          八、倡导群策群力，能者多劳，全员参与，造福球队。
+          （违反队规，一次提醒，二次警告，三次清退）`,
           coverList: [
             "https://img01.yzcdn.cn/vant/cat.jpeg",
             "https://img01.yzcdn.cn/vant/cat.jpeg",
@@ -457,7 +477,7 @@ function JoinedCircleList(props: { listId: string }) {
 }
 
 export default function Index() {
-  const [joined, setJoined] = useState(false);
+  const [joined, setJoined] = useState(true);
 
   const tabs = [
     {
