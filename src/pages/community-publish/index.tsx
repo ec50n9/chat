@@ -53,6 +53,10 @@ function Index() {
 
   const [content, setContent] = useState("");
   const [files, setFiles] = useState<Uploader.File[]>([]);
+  const handleFilesChange = (_files: Uploader.File[]) => {
+    setFiles(_files);
+    console.log(_files);
+  };
 
   const handleSubmit = (
     event: BaseEventOrig<FormProps.onSubmitEventDetail>
@@ -87,7 +91,7 @@ function Index() {
         />
         {/* 图片 */}
         <View className='pics'>
-          <BasicUploader value={files} onChange={setFiles} />
+          <BasicUploader value={files} onChange={handleFilesChange} />
         </View>
       </View>
       {/* 圈子 */}
