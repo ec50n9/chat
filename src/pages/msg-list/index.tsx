@@ -8,7 +8,9 @@ import {
 } from "@taroify/icons";
 import { Text, View } from "@tarojs/components";
 import { usePageScroll } from "@tarojs/taro";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCount } from "../../actions/msg";
 
 type MsgItem = {
   id: string;
@@ -138,14 +140,29 @@ function MsgList() {
 }
 
 export default function Index() {
+  // 使用 store 获取消息数量
+  const msg: any = useSelector((state: any) => state.msg);
+  const dispatch = useDispatch();
+
+  // 调用接口同步消息数量
+  useEffect(() => {
+    dispatch(fetchCount());
+  }, []);
+
   // 清空消息
-  function cleanMsg() {}
+  function cleanMsg() {
+    console.log("clear");
+    // 在这里调用接口清空消息
+    // ...
+    // 然后同步消息数量
+    dispatch(fetchCount());
+  }
 
   const actions = [
     {
       icon: <ChatOutlined size={32} />,
       text: "评论和@",
-      badge: 5,
+      badge: msg.msgCount,
       onClick: () => {},
     },
     {
