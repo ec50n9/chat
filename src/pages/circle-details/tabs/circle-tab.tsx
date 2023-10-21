@@ -23,6 +23,7 @@ function JoinedCircleItem(props: {
     likeCount: number;
     liked: boolean;
     author: any;
+    tags: string[];
   };
 }) {
   const {
@@ -36,6 +37,7 @@ function JoinedCircleItem(props: {
       likeCount,
       liked,
       author,
+      tags,
     },
   } = props;
 
@@ -72,6 +74,18 @@ function JoinedCircleItem(props: {
               previewImage(cover);
             }}
           />
+        ))}
+      </View>
+
+      {/* 标签列表 */}
+      <View className='mt-3 flex items-center gap-2'>
+        {tags.map((tag, index) => (
+          <Text
+            key={index}
+            className='px-3 py-1 text-xs bg-gray-2 c-gray-7 rd-2'
+          >
+            # {tag}
+          </Text>
         ))}
       </View>
 
@@ -146,6 +160,7 @@ function JoinedCircleList(props: { listId: string }) {
             avatar: "https://img01.yzcdn.cn/vant/cat.jpeg",
             timestamp: Date.now(),
           },
+          tags: ["标签1", "标签2", "标签3"],
         });
       }
       setList(newList);
