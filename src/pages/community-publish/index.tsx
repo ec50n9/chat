@@ -78,7 +78,7 @@ function Index() {
     Taro.navigateTo({
       url: "/pages/tags-select/index",
       events: {
-        updateSelectedTags: ({ selectedTags }: { selectedTags: string[] }) => {
+        updateSelectedTags: ({ tags: selectedTags }: { tags: string[] }) => {
           console.log("tag update", selectedTags);
         },
       },
