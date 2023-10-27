@@ -113,7 +113,7 @@ function JoinedCircleList(props: { listId: string }) {
   const [hasMore, setHasMore] = useState(true);
   const [list, setList] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const refreshingRef = useRef(false);
+  const refreshingRef = useRef(true);
   const [scrollTop, setScrollTop] = useState(0);
   const [reachTop, setReachTop] = useState(true);
 
@@ -122,33 +122,13 @@ function JoinedCircleList(props: { listId: string }) {
     setReachTop(aScrollTop === 0);
   });
 
-  const onLoad = () => {
-    setLoading(true);
-    const newList: any[] = refreshingRef.current ? [] : list;
-    setTimeout(() => {
-      refreshingRef.current = false;
-      for (let i = 0; i < 10; i++) {
-        const num = newList.length + 1;
-        newList.push({
-          id: `${listId}-${num}`,
-          content: `广州永泰竞技足球俱乐部八项基本规定
-          一、遵守体育道德，尊重球队，尊重队友，尊重对手；
-          二、坚持以球会友，团结友爱，一日队友，友情长存；
-          三、实行民主集中，队长负责，集体管理，履职尽责；
-          四、服从球队管理，遵守规定，队长带头，队员遵从；
-          五、按时缴纳队费，收支透明，无故拖欠，视同退队；
-          六、严肃报名纪律，如有空降，严禁上场，共同监督；
-          七、比赛教练排阵，主力优先，普通约战，均衡出场；
-          八、倡导群策群力，能者多劳，全员参与，造福球队。
-          （违反队规，一次提醒，二次警告，三次清退）`,
-          coverList: [
-            "https://img01.yzcdn.cn/vant/cat.jpeg",
-            "https://img01.yzcdn.cn/vant/cat.jpeg",
-            "https://img01.yzcdn.cn/vant/cat.jpeg",
-            "https://img01.yzcdn.cn/vant/cat.jpeg",
-            "https://img01.yzcdn.cn/vant/cat.jpeg",
-            "https://img01.yzcdn.cn/vant/cat.jpeg",
-          ],
+  const getTopCircles = () =>
+    new Promise((resolve, reject) => {
+      resolve([
+        {
+          id: `${listId}-top`,
+          content: `这是一条置顶数据`,
+          coverList: [],
           collectCount: 123,
           collected: false,
           commentCount: 123,
@@ -161,12 +141,72 @@ function JoinedCircleList(props: { listId: string }) {
             timestamp: Date.now(),
           },
           tags: ["标签1", "标签2", "标签3"],
-        });
-      }
+        },
+      ]);
+    });
+
+  const getCirclePage = (params: { pageSize: number; pageNo: number }) =>
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const newList: any[] = [];
+        for (let i = 0; i < 10; i++) {
+          const num = newList.length + 1;
+          newList.push({
+            id: `${listId}-${num}`,
+            content: `广州永泰竞技足球俱乐部八项基本规定
+          一、遵守体育道德，尊重球队，尊重队友，尊重对手；
+          二、坚持以球会友，团结友爱，一日队友，友情长存；
+          三、实行民主集中，队长负责，集体管理，履职尽责；
+          四、服从球队管理，遵守规定，队长带头，队员遵从；
+          五、按时缴纳队费，收支透明，无故拖欠，视同退队；
+          六、严肃报名纪律，如有空降，严禁上场，共同监督；
+          七、比赛教练排阵，主力优先，普通约战，均衡出场；
+          八、倡导群策群力，能者多劳，全员参与，造福球队。
+          （违反队规，一次提醒，二次警告，三次清退）`,
+            coverList: [
+              "https://img01.yzcdn.cn/vant/cat.jpeg",
+              "https://img01.yzcdn.cn/vant/cat.jpeg",
+              "https://img01.yzcdn.cn/vant/cat.jpeg",
+              "https://img01.yzcdn.cn/vant/cat.jpeg",
+              "https://img01.yzcdn.cn/vant/cat.jpeg",
+              "https://img01.yzcdn.cn/vant/cat.jpeg",
+            ],
+            collectCount: 123,
+            collected: false,
+            commentCount: 123,
+            likeCount: 123,
+            liked: true,
+            author: {
+              id: "1",
+              name: "张三",
+              avatar: "https://img01.yzcdn.cn/vant/cat.jpeg",
+              timestamp: Date.now(),
+            },
+            tags: ["标签1", "标签2", "标签3"],
+          });
+        }
+        resolve(newList);
+      }, 1000);
+    });
+
+  const onLoad = () => {
+    setLoading(true);
+    const newList: any[] = refreshingRef.current ? [] : list;
+
+    // 加载正常数据
+    const taskList = [getCirclePage({ pageSize: 10, pageNo: 1 })];
+    // 如果是刷新的话，则在前面加上指定的数据
+    refreshingRef.current && taskList.unshift(getTopCircles());
+    // 批量请求
+    Promise.all(taskList).then((results) => {
+      refreshingRef.current = false;
+      // 将请求结果展开合并
+      newList.push(...results.flat());
+
       setList(newList);
       setLoading(false);
       setHasMore(newList.length < 40);
-    }, 1000);
+    });
   };
 
   function onRefresh() {

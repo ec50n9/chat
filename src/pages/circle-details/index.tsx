@@ -303,14 +303,14 @@ export default function Index() {
       name: "圈子动态",
       content: <CircleTab />,
     },
-    {
-      name: "二手市场",
-      content: <ShopTab />,
-    },
-    {
-      name: "组局",
-      content: <CircleTab />,
-    },
+    // {
+    //   name: "二手市场",
+    //   content: <ShopTab />,
+    // },
+    // {
+    //   name: "组局",
+    //   content: <CircleTab />,
+    // },
   ]);
 
   const [currentBlock, setCurrentBlock] = useState(blocks.current[0]);
