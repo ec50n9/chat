@@ -33,6 +33,7 @@ export default defineAppConfig({
     "pages/report/index",
     "pages/pick-user/index",
     "pages/application-management/index",
+    "pages/creator-center/index",
   ],
   window: {
     backgroundTextStyle: "light",
