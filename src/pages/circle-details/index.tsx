@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Taro from "@tarojs/taro";
 import { Setting } from "@taroify/icons";
 import { View, Image, Text } from "@tarojs/components";
 import { Avatar, List, Loading, PullRefresh, Tabs } from "@taroify/core";
+import classNames from "classnames";
 import AuthorInfo from "../../components/author-info";
 import { Ellipsis } from "../../components/ellipsis";
-import CircleTab from "./tabs/circle-list";
+import CircleTab from "./tabs/circle-tab";
+import ShopTab from "./tabs/shop-tab";
 
 function Header() {
   const data = {
@@ -296,6 +298,23 @@ function JoinedHeader(props: {
 export default function Index() {
   const [joined, setJoined] = useState(true);
 
+  const blocks = useRef([
+    {
+      name: "圈子动态",
+      content: <CircleTab />,
+    },
+    // {
+    //   name: "二手市场",
+    //   content: <ShopTab />,
+    // },
+    // {
+    //   name: "组局",
+    //   content: <CircleTab />,
+    // },
+  ]);
+
+  const [currentBlock, setCurrentBlock] = useState(blocks.current[0]);
+
   return (
     <View className='text-base pb-24'>
       {joined ? (
@@ -312,7 +331,31 @@ export default function Index() {
             }}
           />
           <View className='relative bg-white -mt-4 px-3 pb-3 rd-t-4 z-10 of-hidden'>
-            <CircleTab />
+            <View className='h-88 flex items-center gap-5'>
+              {blocks.current.map((block, index) => (
+                <View
+                  key={index}
+                  className={classNames("transition-all duration-100", {
+                    "c-gray-7 text-xl": currentBlock === block,
+                    "text-gray-4 text-base": currentBlock !== block,
+                  })}
+                  onClick={() => setCurrentBlock(block)}
+                >
+                  {block.name}
+                </View>
+              ))}
+            </View>
+
+            {blocks.current.map((block, index) => (
+              <View
+                key={index}
+                className={classNames(block.name, {
+                  hidden: currentBlock.name !== block.name,
+                })}
+              >
+                {block.content}
+              </View>
+            ))}
           </View>
         </>
       ) : (

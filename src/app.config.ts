@@ -34,6 +34,7 @@ export default defineAppConfig({
     "pages/pick-user/index",
     "pages/application-management/index",
     "pages/creator-center/index",
+    "pages/tags-select/index",
   ],
   window: {
     backgroundTextStyle: "light",

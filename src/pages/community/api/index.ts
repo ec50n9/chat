@@ -13,6 +13,7 @@ export type Post = {
   likeCount: number;
   createdAt: number;
   author: Author;
+  tags?: string[];
 };
 
 export type PostComment = {

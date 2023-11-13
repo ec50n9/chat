@@ -357,6 +357,17 @@ function PageContent(props: { post: Post; comments: PostComment[] }) {
         />
       </View>
       <PostContent content={post.content} />
+      {/* 标签列表 */}
+      <View className='mt-3 flex items-center gap-2'>
+        {post.tags?.map((tag, index) => (
+          <Text
+            key={index}
+            className='px-3 py-1 text-xs bg-gray-2 c-gray-7 rd-2'
+          >
+            # {tag}
+          </Text>
+        ))}
+      </View>
       <Actions post={post} />
       {/* 位置和来源 */}
       <View className='pb-3 flex justify-between items-center text-sm c-gray-3'>

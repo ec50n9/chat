@@ -1,8 +1,14 @@
-import { BaseEventOrig, FormProps, Textarea, View } from "@tarojs/components";
+import {
+  BaseEventOrig,
+  FormProps,
+  Textarea,
+  View,
+  Text,
+} from "@tarojs/components";
 import Taro from "@tarojs/taro";
 import { useState } from "react";
-import { Arrow } from "@taroify/icons";
-import { Uploader } from "@taroify/core";
+import { AppsOutlined, Arrow, Close, Ellipsis } from "@taroify/icons";
+import { Cell, Switch, Uploader } from "@taroify/core";
 import "@taroify/icons/index.scss";
 import "./index.scss";
 
@@ -65,6 +71,23 @@ function Index() {
     console.log(files);
   };
 
+  const [tags, setTags] = useState<string[]>(["前端", "后端"]);
+  const [isTop, setIsTop] = useState<boolean>(false);
+
+  const handleSelectTags = () => {
+    Taro.navigateTo({
+      url: "/pages/tags-select/index",
+      events: {
+        updateSelectedTags: ({ tags: selectedTags }: { tags: string[] }) => {
+          console.log("tag update", selectedTags);
+        },
+      },
+      success: (res) => {
+        res.eventChannel.emit("initSelectedTags", { selectedTags: tags });
+      },
+    });
+  };
+
   return (
     <View className='community-publish-page'>
       <View className='header'>
@@ -112,6 +135,37 @@ function Index() {
           </View>
         </View>
       </View>
+
+      {/* 添加标签 */}
+      <Cell
+        title='添加标签'
+        brief={
+          <View className='mt-1 flex flex-wrap gap-2'>
+            {tags.map((tag, i) => (
+              <Text
+                key={i}
+                className='px-3 py-1 text-xs bg-gray-2 c-gray-7 rd-2'
+              >
+                # {tag}
+              </Text>
+            ))}
+          </View>
+        }
+        rightIcon={
+          <Arrow size='20' color='#9ca3af' style={{ marginTop: "2px" }} />
+        }
+        clickable
+        onClick={handleSelectTags}
+      >
+        已选 {tags.length} 个
+      </Cell>
+
+      {/* 置顶 */}
+      <Cell
+        align='center'
+        title='置顶'
+        rightIcon={<Switch size='24' checked={isTop} onChange={setIsTop} />}
+      />
     </View>
   );
 }
