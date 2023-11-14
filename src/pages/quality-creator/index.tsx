@@ -34,7 +34,7 @@ const Condition = (props: {
         <View className='flex justify-between items-center'>
           {item.descElement}
           <View className='c-gray-4'>
-            当前粉丝: <Text className='c-blue-5'>{item.current}</Text>
+            当前: <Text className='c-blue-5'>{item.current}</Text>
           </View>
         </View>
 
@@ -81,6 +81,7 @@ export default function Index() {
         {/* 粉丝数量 */}
         <Condition conds={[cond(5000)`粉丝数量超过${10000}人`]} />
 
+        {/* 瓜子+粉丝 */}
         <Condition
           conds={[
             cond(400)`近三个月获得瓜子${3000}`,
