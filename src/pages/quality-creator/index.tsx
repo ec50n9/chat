@@ -2,9 +2,56 @@ import { Divider, Progress } from "@taroify/core";
 import { GiftOutlined } from "@taroify/icons";
 import { Text, View } from "@tarojs/components";
 
+const cond =
+  (/** 当前值 */ current: number) =>
+  (
+    /** 模板字符串 */
+    fragment: TemplateStringsArray,
+    /** 目标值 */
+    target: number
+  ): {
+    /** 渲染文本 */ descElement: JSX.Element;
+    /** 模板值 */ target: number;
+    /** 当前值 */ current: number;
+  } => ({
+    descElement: (
+      <View key={Date.now()}>
+        {fragment[0]}
+        <Text className='inline-block mx-1 c-red-5'>{target}</Text>
+        {fragment[1]}
+      </View>
+    ),
+    target,
+    current,
+  });
+
+const Condition = (props: {
+  conds: { descElement: JSX.Element; target: number; current: number }[];
+}) => (
+  <View className='px-5 py-3 bg-white rd-2 b-solid b-gray-3 b-2'>
+    {props.conds.map((item, i) => (
+      <View key={i}>
+        <View className='flex justify-between items-center'>
+          {item.descElement}
+          <View className='c-gray-4'>
+            当前粉丝: <Text className='c-blue-5'>{item.current}</Text>
+          </View>
+        </View>
+
+        <Progress
+          className='mt-4'
+          percent={Math.round((item.current / item.target) * 100)}
+        />
+
+        {i < props.conds.length - 1 ? <Divider>且</Divider> : ""}
+      </View>
+    ))}
+  </View>
+);
+
 export default function Index() {
   return (
-    <View className='min-h-screen bg-gray-50 c-gray-7 px-3'>
+    <View className='min-h-screen pb-5 bg-gray-50 c-gray-7 px-3'>
       {/* 标题 */}
       <View className='py-3 text-center text-lg'>苦瓜 优质创作者激励介绍</View>
 
@@ -32,44 +79,14 @@ export default function Index() {
       {/* 条件卡片 */}
       <View className='flex flex-col gap-3'>
         {/* 粉丝数量 */}
-        <View className='px-5 py-3 bg-white rd-2 b-solid b-gray-3 b-2'>
-          <View className='flex justify-between items-center'>
-            <View>
-              粉丝数超过<Text className='inline-block mx-1 c-red-5'>500</Text>人
-            </View>
-            <View className='c-gray-4'>
-              当前粉丝: <Text className='c-blue-5'>59</Text>
-            </View>
-          </View>
+        <Condition conds={[cond(5000)`粉丝数量超过${10000}人`]} />
 
-          <Progress className='mt-4' percent={20} />
-        </View>
-
-        {/* 瓜子和粉丝 */}
-        <View className='px-5 py-3 bg-white rd-2 b-solid b-gray-3 b-2'>
-          <View className='flex justify-between items-center'>
-            <View>
-              近三个月获得瓜子
-              <Text className='inline-block mx-1 c-red-5'>3000</Text>
-            </View>
-            <View className='c-gray-4'>
-              当前获得: <Text className='c-blue-5'>400</Text>
-            </View>
-          </View>
-          <Progress className='mt-4' percent={20} />
-
-          <Divider>且</Divider>
-
-          <View className='flex justify-between items-center'>
-            <View>
-              粉丝数超过<Text className='inline-block mx-1 c-red-5'>200</Text>人
-            </View>
-            <View className='c-gray-4'>
-              当前粉丝: <Text className='c-blue-5'>59</Text>
-            </View>
-          </View>
-          <Progress className='mt-4' percent={20} />
-        </View>
+        <Condition
+          conds={[
+            cond(400)`近三个月获得瓜子${3000}`,
+            cond(59)`粉丝数量超过${200}人`,
+          ]}
+        />
       </View>
     </View>
   );
