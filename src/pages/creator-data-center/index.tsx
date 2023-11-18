@@ -1,4 +1,4 @@
-import { Avatar } from "@taroify/core";
+import { Avatar, Dialog } from "@taroify/core";
 import {
   Comment,
   FireOutlined,
@@ -68,12 +68,16 @@ const DataCard = (props: {
 };
 
 const TipCard = (props: { title: string; desc: string }) => {
+  const showInfo = () => {
+    Dialog.alert("创作数据次日更新，不受到删除等影响");
+  };
+
   return (
     <View className='mt-3 py-3 px-5 bg-white b-1 b-solid b-gray-3 rd-3'>
       <View className='text-lg'>{props.title}</View>
       <View className='mt-1 flex items-center gap-2 c-gray-4'>
         {props.desc}
-        <InfoOutlined />
+        <InfoOutlined onClick={showInfo} />
       </View>
     </View>
   );
@@ -102,11 +106,15 @@ const HotDataCard = (props: {
       value: props.commentCount,
     },
   ];
+
+  const showInfo = () => {
+    Dialog.alert("更新数据有统计和处理延迟，不影响结果");
+  };
   return (
     <View className='mt-3 py-3 px-5 bg-white b-1 b-solid b-gray-3 rd-3'>
-      <View className='text-lg'>
+      <View className='flex items-center gap-2 text-lg'>
         创作数据
-        <InfoOutlined />
+        <InfoOutlined onClick={showInfo} />
       </View>
 
       <View className='mt-1 flex justify-between items-center gap-2'>
@@ -156,6 +164,7 @@ export default function Index() {
         collectCount={100}
         commentCount={100}
       />
+      <Dialog id='dialog' />
     </View>
   );
 }
