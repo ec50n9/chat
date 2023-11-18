@@ -36,6 +36,7 @@ export default defineAppConfig({
     "pages/creator-center/index",
     "pages/tags-select/index",
     "pages/quality-creator/index",
+    "pages/creator-data-center/index",
   ],
   window: {
     backgroundTextStyle: "light",
