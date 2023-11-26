@@ -4,6 +4,7 @@ import {
   Contact,
   GemOutlined,
   GiftOutlined,
+  GoldCoinOutlined,
   SmileCommentOutlined,
 } from "@taroify/icons";
 import { View } from "@tarojs/components";
@@ -30,6 +31,10 @@ export default function CreativeService() {
     {
       label: "成为开发者",
       icon: <Contact size={24} />,
+    },
+    {
+      label: "创作收益",
+      icon: <GoldCoinOutlined size={24} />
     },
     {
       label: "更多服务",
