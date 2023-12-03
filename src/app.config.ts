@@ -38,6 +38,7 @@ export default defineAppConfig({
     "pages/quality-creator/index",
     "pages/creator-data-center/index",
     "pages/personal-center/index",
+    "pages/personal-center/exchange-for-cash/index",
     "pages/income-center/index",
   ],
   window: {

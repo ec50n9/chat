@@ -1,7 +1,8 @@
 import { Avatar } from "@taroify/core";
 import { Arrow, ClosedEye, DiamondOutlined, EyeOutlined } from "@taroify/icons";
 import { View, Text } from "@tarojs/components";
-import { useState } from "react";
+import Taro from "@tarojs/taro";
+import { useRef, useState } from "react";
 
 export default function Index() {
   return (
@@ -94,6 +95,12 @@ function UserInfo(props: {
 }
 
 function Tips() {
+  const gotoExchange = useRef(() => {
+    Taro.navigateTo({
+      url: "/pages/personal-center/exchange-for-cash",
+    });
+  });
+
   return (
     <View className='p-3 flex items-center gap-3 bg-white c-gray-7 rd-3'>
       <View className='basis-0 grow'>
@@ -109,7 +116,10 @@ function Tips() {
           成为优质创作者解锁热度值，现金赢不停。
         </View>
       </View>
-      <View className='shrink-0 px-2 py-1 bg-red-5 c-white text-sm rd-2'>
+      <View
+        className='shrink-0 px-2 py-1 bg-red-5 c-white text-sm rd-2'
+        onClick={gotoExchange.current}
+      >
         兑换现金
       </View>
     </View>
