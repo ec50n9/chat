@@ -4,71 +4,32 @@ import { View } from "@tarojs/components";
 type ActivityProps = {
   days: number;
 };
-//   useEffect(() => {
-//     drawProgress();
-//   });
 
-//   const drawProgress = () => {
-//     const ctx = Taro.createCanvasContext("progressCanvas");
-//     console.log(ctx);
-
-//     const dpr = Taro.getSystemInfoSync().pixelRatio;
-//     // @ts-ignore
-//     const viewWidth = Math.round(ctx.canvas.offsetWidth*dpr);
-//     // @ts-ignore
-//     const viewHeight = Math.round(ctx.canvas.height* dpr);
-//     // @ts-ignore
-//     ctx.canvas.width = viewWidth;
-//     // @ts-ignore
-//     ctx.canvas.height = viewHeight;
-
-//     const progressWidth = viewWidth;
-//     const progressHeight = 50;
-//     const progressRadius = progressHeight / 2;
-//     const progressColor = "orange";
-
-//     const nodeCount = 10;
-//     const nodeRadius = 4;
-//     const nodeColor = "#fff";
-
-//     ctx.beginPath();
-//     ctx.strokeStyle = progressColor;
-//     ctx.lineWidth = progressHeight;
-//     ctx.lineCap = "round";
-//     ctx.moveTo(progressRadius, progressRadius);
-//     ctx.lineTo(progressWidth - progressRadius, progressRadius);
-//     ctx.stroke();
-//     // ctx.fill();
-
-//     ctx.beginPath();
-//     ctx.strokeStyle = "red";
-//     ctx.lineWidth = progressHeight;
-//     ctx.lineCap = "round";
-//     ctx.moveTo(progressRadius, progressRadius);
-//     ctx.lineTo((progressWidth - progressRadius) / 3, progressRadius);
-//     ctx.stroke();
-
-//     // 绘制进度节点
-//     const nodeGap = progressWidth / (nodeCount - 1); // 进度节点间距
-//     for (let i = 0; i < nodeCount; i++) {
-//       const nodeX = 20 + i * nodeGap;
-//       ctx.beginPath()
-//       ctx.setFontSize(20 * dpr)
-//       ctx.fillText('hahaha', nodeX, 100);
-//     }
-
-//     ctx.draw();
-//   };
-
-//   return (
-//     <Canvas
-//       id='progressCanvas'
-//       canvasId='progressCanvas'
-//       className='w-full h-100'
-//       type='2d'
-//     />
-//   );
-// };
+const EcProgress = (props: {
+  steps: (number | null)[];
+  percent: number;
+  label: string;
+}) => {
+  return (
+    <View className='mt-3 w-full'>
+      <View className='flex justify-between'>
+        {props.steps.map((item, index) =>
+          item ? (
+            <View
+              key={index}
+              className='px-2 text-xs bg-orange-3 c-orange-7 rd-1'
+            >
+              {item}
+            </View>
+          ) : (
+            <View className='w-20'></View>
+          )
+        )}
+      </View>
+      <Progress className='mt-1' percent={props.percent} label={props.label} />
+    </View>
+  );
+};
 
 export default function (props: ActivityProps) {
   return (
@@ -77,8 +38,8 @@ export default function (props: ActivityProps) {
       <Divider className='my-1! w-1/2 b-gray-4!'>无限瓜子领不停</Divider>
       <View className='mt-3 text-lg'>已连续签到 {props.days} 天</View>
       <View className='mt-1 text-sm c-gray-4'>连续签到 7 天享受更高奖励</View>
-      <Progress
-        className='mt-1 w-full'
+      <EcProgress
+        steps={[null, 10, 20, 40, 80, 150, 200, 600]}
         percent={(props.days / 7) * 100}
         label={`还差 ${7 - props.days} 天`}
       />
