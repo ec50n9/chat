@@ -18,7 +18,7 @@ export default function Index() {
         commentCount={1}
       />
       <CreativeService />
-      <Activity days={1} />
+      <Activity days={3} />
     </View>
   );
 }
