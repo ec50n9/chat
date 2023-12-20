@@ -1,4 +1,4 @@
-import { Avatar, Dialog } from "@taroify/core";
+import { Dialog } from "@taroify/core";
 import {
   Comment,
   FireOutlined,
@@ -7,28 +7,7 @@ import {
   Star,
 } from "@taroify/icons";
 import { View } from "@tarojs/components";
-
-const CreatorDataCard = (props: {
-  avatar: string;
-  nickname: string;
-  days: number;
-}) => (
-  <View className='p-5 flex flex-col bg-white b-1 b-solid b-gray-3 rd-3'>
-    <View className='flex justify-between items-center'>
-      <View className='flex items-end gap-1'>
-        Hi!
-        <Avatar src={props.avatar} />
-        {props.nickname}
-      </View>
-
-      <View className='px-3 py-1 text-sm bg-blue-5 c-white rd-1'>发布</View>
-    </View>
-
-    <View className='mt-3 c-gray-4'>
-      今天是你成为苦瓜优质创作者的第{props.days}天
-    </View>
-  </View>
-);
+import CreatorDataCard from "../../components/creator-data-card";
 
 const DataCard = (props: {
   pickCount: number;

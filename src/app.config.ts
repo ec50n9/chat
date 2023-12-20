@@ -40,6 +40,7 @@ export default defineAppConfig({
     "pages/personal-center/index",
     "pages/personal-center/exchange-for-cash/index",
     "pages/income-center/index",
+    "pages/income-and-reward/index"
   ],
   window: {
     backgroundTextStyle: "light",
