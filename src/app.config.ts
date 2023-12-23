@@ -18,6 +18,7 @@ export default defineAppConfig({
     "pages/my-order/index",
     "pages/msg-list/index",
     "pages/circle-details/index",
+    "pages/circle-details/settings",
     "pages/common-search/index",
     "pages/circle-create/index",
     "pages/circle-create/intro",

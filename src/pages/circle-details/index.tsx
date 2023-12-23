@@ -251,6 +251,10 @@ function JoinedHeader(props: {
 }) {
   const [showFullName, setShowFullName] = useState(false);
 
+  const handleSettingClick = ()=>{
+    Taro.navigateTo({ url: "/pages/circle-details/settings" });
+  }
+
   return (
     <View className='h-400 relative'>
       <View className='absolute inset-0 -z-10'>
@@ -284,7 +288,7 @@ function JoinedHeader(props: {
           </View>
           {/* 右侧操作按钮 */}
           <View className='shrink-0 flex flex-col gap-2 items-end c-gray-7'>
-            <Setting size={24} />
+            <Setting size={24} onClick={handleSettingClick} />
             <View className='text-xs px-2 py-1 bg-gray-7 c-white rd-full'>
               分享
             </View>
