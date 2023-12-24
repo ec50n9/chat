@@ -1,8 +1,14 @@
-import { Avatar, Button, Cell, Popup } from "@taroify/core";
+import { Avatar, Button, Cell, Dialog, Popup } from "@taroify/core";
 import CellGroup from "@taroify/core/cell/cell-group";
 import { Arrow, Qr } from "@taroify/icons";
-import { View, Text, Input } from "@tarojs/components";
+import { View, Text } from "@tarojs/components";
 import { useState } from "react";
+
+import EditCircleFullName from "./settings-popups/edit-circle-full-name";
+import EditCircleShortName from "./settings-popups/edit-circle-short-name";
+import EditCircleIntro from "./settings-popups/edit-circle-intro";
+import EditCircleTags from "./settings-popups/edit-circle-tags";
+import Taro from "@tarojs/taro";
 
 const Header = (props: { avatar: string; name: string }) => {
   return (
@@ -33,88 +39,14 @@ const CircleInfoBar = (props: { name: string; id: string }) => {
   );
 };
 
-const EditCircleFullName = (props: {
-  name: string;
-  onCancel: () => void;
-  onUpdate: (name: string) => void;
-}) => {
-  const [value, setValue] = useState(props.name);
-
-  return (
-    <View>
-      <View className='text-lg c-gray-7 mb-3'>编辑圈子全称</View>
-      <Input
-        className='px-3 py-2 b-3 b-solid b-gray-3 rd-2'
-        placeholder='请输入圈子全称'
-        value={value}
-        onInput={(e) => setValue(e.detail.value)}
-      />
-      <View className='mt-5 flex gap-3'>
-        <Button
-          variant='outlined'
-          shape='round'
-          size='medium'
-          block
-          onClick={props.onCancel}
-        >
-          取消
-        </Button>
-        <Button
-          color='primary'
-          shape='round'
-          size='medium'
-          block
-          onClick={() => props.onUpdate(value)}
-        >
-          保存
-        </Button>
-      </View>
-    </View>
-  );
-};
-
-const EditCircleShortName = (props: {
-  name: string;
-  onCancel: () => void;
-  onUpdate: (name: string) => void;
-}) => {
-  const [value, setValue] = useState(props.name);
-
-  return (
-    <View>
-      <View className='text-lg c-gray-7 mb-3'>编辑圈子简称</View>
-      <Input
-        className='px-3 py-2 b-3 b-solid b-gray-3 rd-2'
-        placeholder='请输入圈子简称'
-        value={value}
-        onInput={(e) => setValue(e.detail.value)}
-      />
-      <View className='mt-5 flex gap-3'>
-        <Button
-          variant='outlined'
-          shape='round'
-          size='medium'
-          block
-          onClick={props.onCancel}
-        >
-          取消
-        </Button>
-        <Button
-          color='primary'
-          shape='round'
-          size='medium'
-          block
-          onClick={() => props.onUpdate(value)}
-        >
-          保存
-        </Button>
-      </View>
-    </View>
-  );
-};
-
 const SettingsPanel = () => {
   const [currentPopup, setCurrentPopup] = useState<string | null>(null);
+
+  const [exitCircleDialogVisible, setExitCircleDialogVisible] = useState(false);
+  const handleExitCircle = () => {
+    // 这里执行退出圈子的逻辑
+    console.log("退出圈子");
+  };
 
   return (
     <View className='py-5'>
@@ -135,7 +67,9 @@ const SettingsPanel = () => {
           title='圈子成员'
           rightIcon={<Arrow className='flex!' size={18} />}
           clickable
-          onClick={() => setCurrentPopup("circle-members")}
+          onClick={() =>
+            Taro.navigateTo({ url: "/pages/circle-details/member-manager" })
+          }
         />
         <Cell
           title='圈子介绍'
@@ -150,6 +84,7 @@ const SettingsPanel = () => {
           title='标签管理'
           rightIcon={<Arrow className='flex!' size={18} />}
           clickable
+          onClick={() => setCurrentPopup("circle-tags")}
         />
         <Cell
           title='入圈申请'
@@ -159,38 +94,80 @@ const SettingsPanel = () => {
       </CellGroup>
 
       <CellGroup className='mt-3'>
-        <Cell clickable>
+        <Cell clickable onClick={() => setExitCircleDialogVisible(true)}>
           <Text className='c-red-5'>退出圈子</Text>
         </Cell>
       </CellGroup>
 
+      {/* 编辑弹窗 */}
       <Popup
         placement='bottom'
+        rounded
         className='h-3/5'
         open={!!currentPopup}
         onClose={() => setCurrentPopup(null)}
       >
         <View className='p-3'>
-          {
-            {
-              "circle-fullname": (
-                <EditCircleFullName
-                  name='广州大学校友圈'
-                  onCancel={() => setCurrentPopup(null)}
-                  onUpdate={() => {}}
-                />
-              ),
-              "circle-shortname": (
-                <EditCircleShortName
-                  name='校友'
-                  onCancel={() => setCurrentPopup(null)}
-                  onUpdate={() => {}}
-                />
-              ),
-            }[currentPopup]
-          }
+          {currentPopup
+            ? {
+                "circle-fullname": (
+                  <EditCircleFullName
+                    initValue='广州大学校友圈'
+                    onCancel={() => setCurrentPopup(null)}
+                    onUpdate={() => {}}
+                  />
+                ),
+                "circle-shortname": (
+                  <EditCircleShortName
+                    initValue='校友'
+                    onCancel={() => setCurrentPopup(null)}
+                    onUpdate={() => {}}
+                  />
+                ),
+                "circle-members": "",
+                "circle-intro": (
+                  <EditCircleIntro
+                    initValue='这是一段简介'
+                    onCancel={() => setCurrentPopup(null)}
+                    onUpdate={() => {}}
+                  />
+                ),
+                "circle-tags": (
+                  <EditCircleTags
+                    initValue={[
+                      { id: "1", name: "标签1" },
+                      { id: "2", name: "标签2" },
+                    ]}
+                    onCancel={() => setCurrentPopup(null)}
+                    onUpdate={() => {}}
+                  />
+                ),
+              }[currentPopup]
+            : ""}
         </View>
       </Popup>
+
+      {/* 退出圈子弹窗 */}
+      <Dialog
+        open={exitCircleDialogVisible}
+        onClose={() => setExitCircleDialogVisible(false)}
+      >
+        <Dialog.Header>退出圈子</Dialog.Header>
+        <Dialog.Content>确定要退出该圈子吗？</Dialog.Content>
+        <Dialog.Actions>
+          <Button onClick={() => setExitCircleDialogVisible(false)}>
+            取消
+          </Button>
+          <Button
+            onClick={() => {
+              handleExitCircle();
+              setExitCircleDialogVisible(false);
+            }}
+          >
+            确认
+          </Button>
+        </Dialog.Actions>
+      </Dialog>
     </View>
   );
 };

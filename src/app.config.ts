@@ -19,6 +19,7 @@ export default defineAppConfig({
     "pages/msg-list/index",
     "pages/circle-details/index",
     "pages/circle-details/settings",
+    "pages/circle-details/member-manager",
     "pages/common-search/index",
     "pages/circle-create/index",
     "pages/circle-create/intro",
